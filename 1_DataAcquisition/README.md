@@ -132,6 +132,7 @@ After the tests are done, the data has to be read out to find the information we
 
 Out of extensive research it was found that a threshold of around 100 electrons is optimal for the operation of ALPIDE. By plotting all values over their parameters, you find the dependence of the threshold from the parameters and you can determine the best sets of parameters for operation.
 
+<!---
 To execute a threshold test, execute:
 
 ... 
@@ -141,6 +142,7 @@ The data can be analyzed by:
 ...
 
 For a Noiseoccupancy test, execute
+-->
 
 ## 5. Starting a measurement
 
@@ -198,7 +200,7 @@ The most important one is window 0 (see image). The other windows can be used fo
 
 Useful tmux commands:
 CTRL+B – control sequence for tmux
-$\color{red}{\text{CTRL+B D – detach from session}}$ (still running in background! So don't worry. To completely end the run, type $\color{blue}{\text{tmux a -t ITS3}}$)
+$\color{red}{\text{CTRL+B D – detach from session}}$ (still running in background! So don't worry. To completely end the run, type `tmux a -t ITS3`)
 CTRL+B N – next window
 CTRL+B P – previous window
 CTRL+B #NUMBER# - switch to window #NUMBER#
@@ -212,7 +214,7 @@ S – stop run, switches to next run if more are queued
 T – terminate run
 Q – kill GUI
 
-See also: [The TMux cheat sheet](https://tmuxcheatsheet.com/)
+See also: [The Tmux Cheat Sheet & Quick Reference](https://tmuxcheatsheet.com/)
 
 
 ### Eventmonitor
@@ -223,7 +225,7 @@ Another way to check, wether the collected data is reasonable, one can look at t
 $ cd ../../media/curved/ALPIDE_data/GSI_May_2021/
 ```
 
-and by typing $\color{blue}{\text{ls -lrt}}$ you can look at the data files. The current run is the latest and should be located at the bottom of the list. Copy the file name, for example $\color{green}{\text{run195150617_210514150623.raw}}$ and type:
+and by executing `ls -lrt` you can look at the data files. The current run is the latest and should be located at the bottom of the list. Copy the file name, for example `run195150617_210514150623.raw` and type:
 
 ```Shell Session
 $ ~/eudaq2/bin/StdEventMonitor -d run195150617_210514150623.raw -e 10
