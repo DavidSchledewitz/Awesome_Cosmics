@@ -63,11 +63,11 @@ In normal operation, the Powersupply should be used in the following manner:
 
 ```shell
               === CH 1 ===  === CH 2 ===   === CH 3 ===   === CH 4 ===
-    	State:    	ON         	ON         	ON        	OFF	 
-  Set voltage:   	5.00 V     	3.00 V     	3.00 V     	5.00 V  
-  Set current:	  3500.00 mA   	15.00 mA    3.00 mA  	350.00 mA
-Meas. voltage:   	5.00 V     	3.00 V     	3.00 V     	0.00 V  
-Meas. current:	 3128.00 mA    	0.30 mA    	0.00 mA    	0.00 mA
+    	State:      ON	        ON		ON        	OFF	 
+  Set voltage:  5.00 V		3.00 V     	3.00 V	    5.00 V  
+  Set current:	3500.00 mA   	15.00 mA	3.00 mA     350.00 mA
+Meas. voltage:  5.00 V     	3.00 V     	3.00 V      0.00 V  
+Meas. current:	3128.00 mA    	0.30 mA    	0.00 mA     0.00 mA
 
 CH1: DAQ boards (REF & DUT)
 CH2: Vbb for REF planes
@@ -161,7 +161,7 @@ $\color{blue}{\text{tmux a -t ITS3}}$
 
 to open the run control. It will look something like that:
 
-![alt text](Media/tmux.png)
+![https://github.com/DavidSchledewitz/Awesome_Cosmics/blob/main/Media/tmux.png]
 
 There are multiple windows in the Run control, as shown below:
 
