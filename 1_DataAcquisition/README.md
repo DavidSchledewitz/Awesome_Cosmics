@@ -3,11 +3,14 @@ In the jupiter notebook the whole process from loging in in the GSI network over
 ## 2. Powering
 
 If the chip is not operating, all power supplies have to be turned off and be turned on, if you want to use the detector.
+<div class="text-red">
+  Warning!!!
+</div>
 $\color{red}{\text{Warning!!!}}$ Before running any command here, check again and know what you are about to turn on/off. Wrong usage of the powersupply can irreversibly damage the detectors.
 
 From the Homedirectory ($\color{green}{\text{curved@alipc006:~$ \$ $}}$, if you are not there type $\color{blue}{\text{cd}}$) the status of the power supply can be printed by:
 
-$\color{blue}{\text{python3 ~/eudaq2/user/ITS3/python/HMP4040.py}}$
+`\color{blue}{\text{python3 ~/eudaq2/user/ITS3/python/HMP4040.py}}$
 
 To turn on/off channel 1 (other channels analogously), write:
 
