@@ -36,35 +36,45 @@ Linux lxi093 3.16.0-11-amd64 #1 SMP Debian 3.16.84-1 (2020-06-09) x86_64
 
 Now you can ssh on the PC controlling the detector:
 
-$\color{blue}{\text{ssh -X curved@alipc006 }}$
+``` Shell Session
+$ ssh -X curved@alipc006
+```
 
 with the password T******
 
-Now you can start to work with the detector.
+**Now you can start to work with the detector.**
 
 ## 2. Powering
 
-If the chip is not operating, all power supplies have to be turned off and be turned on, if you want to use the detector.
+If the chip is not operating, all power supplies have to be turned off and be
+turned on, if you want to use the detector.
 - ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) `Warning!!!`
-Before running any command here, check again and know what you are about to turn on/off. Wrong usage of the powersupply can irreversibly damage the detectors.
+Before running any command here, check again and know what you are about to turn
+on/off. Wrong usage of the powersupply can irreversibly damage the detectors.
 
-From the Homedirectory curved@alipc006:~$ \$ $}}$, if you are not there type $\color{blue}{\text{cd}}$) the status of the power supply can be printed by:
+From the Homedirectory `curved@alipc006:~$` (if you are not there execute `cd`)
+the status of the power supply can be printed by:
 
-`\color{blue}{\text{python3 ~/eudaq2/user/ITS3/python/HMP4040.py}}$
+``` Shell Session
+$ python3 ~/eudaq2/user/ITS3/python/HMP4040.py
+```
 
 To turn on/off channel 1 (other channels analogously), write:
 
-$\color{blue}{\text{python3 ~/eudaq2/user/ITS3/python/HMP4040.py --off -c 1 }}$
-
-$\color{blue}{\text{python3 ~/eudaq2/user/ITS3/python/HMP4040.py --on -c 1}}$
+``` Shell Session
+$ python3 ~/eudaq2/user/ITS3/python/HMP4040.py --off -c 1 
+$ python3 ~/eudaq2/user/ITS3/python/HMP4040.py --on -c 1
+```
 
 For doing a complete power cycle (turn off and off again), use the following command:
 
-$\color{blue}{\text{python3 ~/eudaq2/user/ITS3/python/HMP4040.py --off -c 1 && sleep 1 && python3 ~/eudaq2/user/ITS3/python/HMP4040.py --off -c 2 && python3 ~/eudaq2/user/ITS3/python/HMP4040.py --off -c 3 && python3 ~/eudaq2/user/ITS3/python/HMP4040.py --off -c 4 && sleep 2 && python3 ~/eudaq2/user/ITS3/python/HMP4040.py --on -c 1 && sleep 1 && python3 ~/eudaq2/user/ITS3/python/HMP4040.py --on -c 2 && python3 ~/eudaq2/user/ITS3/python/HMP4040.py --on -c 3 && python3 ~/eudaq2/user/ITS3/python/HMP4040.py --on -c 4}}$
+``` Shell Session
+python3 ~/eudaq2/user/ITS3/python/HMP4040.py --off -c 1 && sleep 1 && python3 ~/eudaq2/user/ITS3/python/HMP4040.py --off -c 2 && python3 ~/eudaq2/user/ITS3/python/HMP4040.py --off -c 3 && python3 ~/eudaq2/user/ITS3/python/HMP4040.py --off -c 4 && sleep 2 && python3 ~/eudaq2/user/ITS3/python/HMP4040.py --on -c 1 && sleep 1 && python3 ~/eudaq2/user/ITS3/python/HMP4040.py --on -c 2 && python3 ~/eudaq2/user/ITS3/python/HMP4040.py --on -c 3 && python3 ~/eudaq2/user/ITS3/python/HMP4040.py --on -c 4
+```
 
-In normal operation, the Powersupply should be used in the following manner:
+In normal operation, the powersupply should be used in the following manner:
 
-```shell
+```Shell Session
               === CH 1 ===  === CH 2 ===   === CH 3 ===   === CH 4 ===
     	State:      ON	        ON		ON        	OFF	 
   Set voltage:  5.00 V		3.00 V     	3.00 V	    5.00 V  
@@ -90,14 +100,15 @@ Now some more information on the managing the power of the telescope:
 - 5V for powering of the DAQ boards with the current consumption stated at Info #2.
 - 0 or -3V for back-bias. It should not draw current (or only slightly ~0.1 mA). If more, contact Bogdan
 
-
 ## 3. Programming
 
 After the Chips and DAQ boards are powered, they can be programmed (DAQ boards require a reprogramming after each power cycle)
 
 With
 
-$\color{blue}{\text{alpide-daq-program -l}}$
+```Shell Session
+$ alpide-daq-program -l
+```
 
 all available DAQ boards are listed by their unique serial number. With the list you can verify that all DAQ boards (one for each sensor, usually 6) are available. If not all DAQ are shown, do a power cycle.
 It might take a while for all DAQ boards to report back after repowering/reprogramming. If after the first alpide-daq-program -l not all DAQ-boards are listed, wait 10s and try again.
@@ -105,10 +116,11 @@ If this does not solve the problem, contact Bogdan.
 
 Now, to programm the DAQ boards (both FX3 -usb- and FPGA firmware), type
 
-$\color{blue}{\text{alpide-daq-program --all --fx3 ~/alpide-daq-software/alpidedaqboard/fx3.img --fpga ~/alpide-daq-software/alpidedaqboard/fpga-v1.0.0.bit}}$
+``` Shell Session
+$ alpide-daq-program --all --fx3 ~/alpide-daq-software/alpidedaqboard/fx3.img --fpga ~/alpide-daq-software/alpidedaqboard/fpga-v1.0.0.bit 
+```
 
 If any problem accurs, try a power cycle. If everything works flawlessly, we are ready to take data!
-
 
 ## 4. Testing
 
@@ -134,23 +146,29 @@ For a Noiseoccupancy test, execute
 
 To finally start a measurement, type 
 
-$\color{blue}{\text{cd eudaq2/user/ITS3/misc/}}$
+```Shell Session
+$ cd eudaq2/user/ITS3/misc/
+```
 
 to go to the right directory.
 
-The file $\color{green}{\text{ITS3.ini}}$ contains the mapping of planes (their number/physical ID wrt incoming beam) to DAQ serial number and more, what is needed for the data acquisition.
-This file can be changed by $\color{blue}{\text{vim ITS3.ini}}$ if you want to use new config files (other arameters for VCASN and ITHR for example). The config files are also located here. They are produced by Bogdan. Take a look at them!
-At line 6 of $\color{green}{\text{ITS3.ini}}$, you can specify what configs to use (“configs= ITS3-XYZ.conf”). Everything else should not be changed without consultation.
+The file `ITS3.ini` contains the mapping of planes (their number/physical ID wrt incoming beam) to DAQ serial number and more, what is needed for the data acquisition.
+This file can be changed by `vim ITS3.ini` if you want to use new config files (other arameters for VCASN and ITHR for example). The config files are also located here. They are produced by Bogdan. Take a look at them!
+At line 6 of `ITS3.ini`, you can specify what configs to use `configs= ITS3-XYZ.conf”`. Everything else should not be changed without consultation.
 
 If everything is set it is left to start the data taking!
 
-$\color{blue}{\text{./ITS3start.sh}}$
+```Shell Session
+$ ./ITS3start.sh
+```
 
 To end the run (data acquisiton will be stoped, so be carefull! Don't type it if you just want to exit from the remote computer.), type:
 
-$\color{blue}{\text{tmux kill-session -t ITS3}}$
+```Shell Session
+$ tmux kill-session -t ITS3
+```
 
-FOr more info, read the runcontrol chapter below.
+For more info, read the runcontrol chapter below.
 
 ## 6. Monitoring
 
@@ -158,9 +176,11 @@ FOr more info, read the runcontrol chapter below.
 
 If the data acquisition is started, we want to make sure that now issues accur, which could lead to bad data or no data at all!
 
-After going back to the home directory by $\color{blue}{\text{cd}}$, type
+After going back to the home directory by executing `cd`, type
 
-$\color{blue}{\text{tmux a -t ITS3}}$
+```Shell Session
+tmux a -t ITS3
+```
 
 to open the run control. It will look something like that:
 
@@ -192,19 +212,22 @@ S – stop run, switches to next run if more are queued
 T – terminate run
 Q – kill GUI
 
-See also: https://tmuxcheatsheet.com/
+See also: [The TMux cheat sheet](https://tmuxcheatsheet.com/)
 
 
 ### Eventmonitor
 
 Another way to check, wether the collected data is reasonable, one can look at the hitmaps and correlations between the sensors. To do so, type from teh homedirectory:
 
-$\color{blue}{\text{cd ../../media/curved/ALPIDE_data/GSI_May_2021/}}$
+```Shell Session
+cd ../../media/curved/ALPIDE_data/GSI_May_2021/
+```
 
 and by typing $\color{blue}{\text{ls -lrt}}$ you can look at the data files. The current run is the latest and should be located at the bottom of the list. Copy the file name, for example $\color{green}{\text{run195150617_210514150623.raw}}$ and type:
 
-$\color{blue}{\text{~/eudaq2/bin/StdEventMonitor -d run195150617_210514150623.raw -e 10}}$
-
+```Shell Session
+~/eudaq2/bin/StdEventMonitor -d run195150617_210514150623.raw -e 10
+```
 In the Eventmonitor, you can look at different plots, like the pixel hitmaps, cluster hitmaps, or the correlation between the the x/y coordinates of different sensors. The latter is shown in the following:
 
 ![img](https://github.com/DavidSchledewitz/Awesome_Cosmics/blob/main/Media/Eventmonitor.png)
