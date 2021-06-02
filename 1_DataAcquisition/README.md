@@ -11,7 +11,9 @@ the ALPIDE telescope is connected to a computer at GSI, we can ssh to this compu
 Therefore, you have to firstly login to the GSI network with your individual
 account via ssh. Therefore type the following in the commandline
 
-$\color{blue}{\text{ssh -X USERNAME@lx-pool.gsi.de}}$
+```Shell Session
+$ ssh -X USERNAME@lx-pool.gsi.de
+```
 
 Afterwards you will have to enter your password. If you do so, the following
 will be shown:
