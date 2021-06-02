@@ -3,7 +3,7 @@ In the jupiter notebook the whole process from loging in in the GSI network over
 ## 2. Powering
 
 If the chip is not operating, all power supplies have to be turned off and be turned on, if you want to use the detector.
-<div class="text-red">
+<div class="text-red mb-2">
   Warning!!!
 </div>
 $\color{red}{\text{Warning!!!}}$ Before running any command here, check again and know what you are about to turn on/off. Wrong usage of the powersupply can irreversibly damage the detectors.
