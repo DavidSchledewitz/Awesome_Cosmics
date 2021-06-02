@@ -19,7 +19,7 @@ $ echo 'test'
 Afterwards you will have to enter your password. If you do so, the following
 will be shown:
 
-```shell
+```Shell Session
 Linux lxi093 3.16.0-11-amd64 #1 SMP Debian 3.16.84-1 (2020-06-09) x86_64                                                   
 +===================================================================+                                                       
 | Welcome to the Linux farm at GSI                                  |                                                       
