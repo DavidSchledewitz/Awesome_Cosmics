@@ -52,7 +52,7 @@ turned on, if you want to use the detector.
 Before running any command here, check again and know what you are about to turn
 on/off. Wrong usage of the powersupply can irreversibly damage the detectors.
 
-From the Homedirectory `curved@alipc006:~$` (if you are not there execute `cd`)
+From the Homedirectory `curved@alipc006:~$` (if you are not there, execute `cd`)
 the status of the power supply can be printed by:
 
 ``` Shell Session
@@ -95,7 +95,7 @@ Now some more information on the managing the power of the telescope:
 
 - After turning the system on (eg: after power cycle (off and on), the DAQ+ALPIDE system will not be initialized → lowest current state (~270mA/board).
 - After programming (see below): slightly higher current (~300mA/board).
-- After the start of the DAQ (after ./ITS3start.sh, see below), the chip is on, clock is distributed on chip → maximum current (~450mA/board)
+- After the start of the DAQ (after `./ITS3start.sh`, see below), the chip is on, clock is distributed on chip → maximum current (~450mA/board)
 
 - 5V for powering of the DAQ boards with the current consumption stated at Info #2.
 - 0 or -3V for back-bias. It should not draw current (or only slightly ~0.1 mA). If more, contact Bogdan
