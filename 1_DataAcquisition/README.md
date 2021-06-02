@@ -203,7 +203,7 @@ CTRL+B N – next window
 CTRL+B P – previous window
 CTRL+B #NUMBER# - switch to window #NUMBER#
 
-If the commands don't work, be sure you type them right: First press CTRL and B together, then release them. After you released them, type the additional key (D,N,P, or number). And be sure to $\color{red}{\text{not}}$ use shift or caps lock for a capital letter. They are used small.
+If the commands don't work, be sure you type them right: First press CTRL and B together, then release them. After you released them, type the additional key (D,N,P, or number). And be sure to **not** use shift or caps lock for a capital letter. They are used small.
 
 There are some more commands, you can use via hotkeys.
 
