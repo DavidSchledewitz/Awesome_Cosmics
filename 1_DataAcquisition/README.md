@@ -13,6 +13,7 @@ account via ssh. Therefore type the following in the commandline
 
 ```Shell Session
 $ ssh -X USERNAME@lx-pool.gsi.de
+$ echo 'test'
 ```
 
 Afterwards you will have to enter your password. If you do so, the following
