@@ -8,7 +8,8 @@ formats, and finally analysis.
 ## First Steps
 
 Download the repository as a `.zip` (On Windows) or clone it onto your system
-by executing `git clone https://github.com/DavidSchledewitz/Awesome_Cosmics.git`
+by executing
+```git clone https://github.com/DavidSchledewitz/Awesome_Cosmics.git```
 in your terminal emulator. If you haven't used git before, check out the 
 tutorial [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
