@@ -161,7 +161,7 @@ $\color{blue}{\text{tmux a -t ITS3}}$
 
 to open the run control. It will look something like that:
 
-![test](https://github.com/DavidSchledewitz/Awesome_Cosmics/blob/main/Media/tmux.png)
+![img](https://github.com/DavidSchledewitz/Awesome_Cosmics/blob/main/Media/tmux.png)
 
 There are multiple windows in the Run control, as shown below:
 
@@ -204,7 +204,7 @@ $\color{blue}{\text{~/eudaq2/bin/StdEventMonitor -d run195150617_210514150623.ra
 
 In the Eventmonitor, you can look at different plots, like the pixel hitmaps, cluster hitmaps, or the correlation between the the x/y coordinates of different sensors. The latter is shown in the following:
 
-![alt text](Media/Eventmonitor.png)
+![img](https://github.com/DavidSchledewitz/Awesome_Cosmics/blob/main/Media/Eventmonitor.png)
 
 Can you explain, why this is the expected shape for a setup with a triggering scintillator below the bottom plane (plane 6)? Which parts of the plot are unwanted effects, which appear (most probably) do to progressed radiation damage?
 
