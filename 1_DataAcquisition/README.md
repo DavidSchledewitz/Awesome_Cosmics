@@ -154,7 +154,7 @@ to go to the right directory.
 
 The file `ITS3.ini` contains the mapping of planes (their number/physical ID wrt incoming beam) to DAQ serial number and more, what is needed for the data acquisition.
 This file can be changed by `vim ITS3.ini` if you want to use new config files (other arameters for VCASN and ITHR for example). The config files are also located here. They are produced by Bogdan. Take a look at them!
-At line 6 of `ITS3.ini`, you can specify what configs to use `configs= ITS3-XYZ.conf”`. Everything else should not be changed without consultation.
+At line 6 of `ITS3.ini`, you can specify what configs to use `configs= ITS3-XYZ.conf`. Everything else should not be changed without consultation.
 
 If everything is set it is left to start the data taking!
 
@@ -179,7 +179,7 @@ If the data acquisition is started, we want to make sure that now issues accur, 
 After going back to the home directory by executing `cd`, type
 
 ```Shell Session
-tmux a -t ITS3
+$ tmux a -t ITS3
 ```
 
 to open the run control. It will look something like that:
@@ -220,13 +220,13 @@ See also: [The TMux cheat sheet](https://tmuxcheatsheet.com/)
 Another way to check, wether the collected data is reasonable, one can look at the hitmaps and correlations between the sensors. To do so, type from teh homedirectory:
 
 ```Shell Session
-cd ../../media/curved/ALPIDE_data/GSI_May_2021/
+$ cd ../../media/curved/ALPIDE_data/GSI_May_2021/
 ```
 
 and by typing $\color{blue}{\text{ls -lrt}}$ you can look at the data files. The current run is the latest and should be located at the bottom of the list. Copy the file name, for example $\color{green}{\text{run195150617_210514150623.raw}}$ and type:
 
 ```Shell Session
-~/eudaq2/bin/StdEventMonitor -d run195150617_210514150623.raw -e 10
+$ ~/eudaq2/bin/StdEventMonitor -d run195150617_210514150623.raw -e 10
 ```
 In the Eventmonitor, you can look at different plots, like the pixel hitmaps, cluster hitmaps, or the correlation between the the x/y coordinates of different sensors. The latter is shown in the following:
 
