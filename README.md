@@ -7,14 +7,15 @@ formats, and finally analysis.
 
 ## First Steps
 
-Download the repository as a `.zip` (On Windows) or clone it onto your system
-by executing
+Download the repository as a `.zip` or clone it onto your system by executing
 ```shell
 git clone https://github.com/DavidSchledewitz/Awesome_Cosmics.git
 ```
-in your terminal emulator. If you haven't used git before, check out the 
-tutorial [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+in your terminal emulator. If you do not have git installed, check out the 
+installation tutorial
+[here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
 After you've successfully finished this step, you should have a copy of all
 of the files contained in this repository on your local machine, and are ready
 to work with them.
+
