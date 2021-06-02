@@ -161,7 +161,7 @@ $\color{blue}{\text{tmux a -t ITS3}}$
 
 to open the run control. It will look something like that:
 
-![https://github.com/DavidSchledewitz/Awesome_Cosmics/blob/main/Media/tmux.png]
+![test](https://github.com/DavidSchledewitz/Awesome_Cosmics/blob/main/Media/tmux.png)
 
 There are multiple windows in the Run control, as shown below:
 
