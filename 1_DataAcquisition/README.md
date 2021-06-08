@@ -206,7 +206,7 @@ The most important one is window 0 (see image). The other windows can be used fo
 
 Useful tmux commands:
 - CTRL+B – control sequence for tmux
-- $\color{red}{\text{CTRL+B D – detach from session}}$ (still running in background! So don't worry. To completely end the run, type `tmux a -t ITS3`)
+- CTRL+B D – detach from session (still running in background! So don't worry. To completely end the run, type `tmux a -t ITS3`)
 - CTRL+B N – next window
 - CTRL+B P – previous window
 - CTRL+B #NUMBER# - switch to window #NUMBER#
@@ -225,7 +225,9 @@ See also: [The Tmux Cheat Sheet & Quick Reference](https://tmuxcheatsheet.com/)
 
 ### Eventmonitor
 
-Another way to check, wether the collected data is reasonable, one can look at the hitmaps and correlations between the sensors. To do so, type from teh homedirectory:
+Another way to check, wether the collected data is reasonable, one can look at
+the hitmaps and correlations between the sensors. To do so, move into the directory
+containing the data
 
 ```Shell Session
 $ cd ../../media/curved/ALPIDE_data/GSI_May_2021/
