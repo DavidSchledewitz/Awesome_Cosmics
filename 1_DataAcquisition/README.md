@@ -90,7 +90,7 @@ CH4: unconnected
 
 If the status of the power supply show other values (or not the values Bogdan agreed with you to use), contact Bogdan.
 
-Now some more information on the managing the power of the telescope:
+Now some more information on managing the power of the telescope:
 - If I > current limit, all channels are fused
 
 - After turning the system on (eg: after power cycle (off and on), the DAQ+ALPIDE system will not be initialized → lowest current state (~270mA/board).
@@ -114,7 +114,7 @@ all available DAQ boards are listed by their unique serial number. With the list
 It might take a while for all DAQ boards to report back after repowering/reprogramming. If after the first alpide-daq-program -l not all DAQ-boards are listed, wait 10s and try again.
 If this does not solve the problem, contact Bogdan.
 
-Now, to programm the DAQ boards (both FX3 -usb- and FPGA firmware), type
+Now, to program the DAQ boards (both FX3 -usb- and FPGA firmware), type
 
 ``` Shell Session
 $ alpide-daq-program --all --fx3 ~/alpide-daq-software/alpidedaqboard/fx3.img --fpga ~/alpide-daq-software/alpidedaqboard/fpga-v1.0.0.bit 
@@ -124,11 +124,12 @@ If any problem accurs, try a power cycle. If everything works flawlessly, we are
 
 ## 4. Testing
 
-But before we can take data, we have to make sure that the detector is operated properly
+But before we can take data, we should make sure that the detector is operated properly
 
 The first step is to get the right parameters at which we want to use the detector. Therefore two different tests are done: the threshold and the noise occupancy test. The test is executed for different internal (DACs like VCASN, ITHR) and external (Backbias voltage, referred to as BB or VBB) parameters (see more on google documentation).
 
-After the tests are done, the data has to be read out to find the information we want (THreshold and Noise at given set of parameters)
+After the tests are done, the data has to be read out to find the information we
+want (Threshold and Noise at given set of parameters)
 
 Out of extensive research it was found that a threshold of around 100 electrons is optimal for the operation of ALPIDE. By plotting all values over their parameters, you find the dependence of the threshold from the parameters and you can determine the best sets of parameters for operation.
 
@@ -146,7 +147,7 @@ For a Noiseoccupancy test, execute
 
 ## 5. Starting a measurement
 
-To finally start a measurement, type 
+To finally start a measurement, execute 
 
 ```Shell Session
 $ cd eudaq2/user/ITS3/misc/
@@ -154,8 +155,12 @@ $ cd eudaq2/user/ITS3/misc/
 
 to go to the right directory.
 
-The file `ITS3.ini` contains the mapping of planes (their number/physical ID wrt incoming beam) to DAQ serial number and more, what is needed for the data acquisition.
-This file can be changed by `vim ITS3.ini` if you want to use new config files (other arameters for VCASN and ITHR for example). The config files are also located here. They are produced by Bogdan. Take a look at them!
+The file `ITS3.ini` contains the mapping of planes (their number/physical ID wrt
+the  incoming beam) to DAQ serial number and more, what is needed for the data
+acquisition.
+This file can be changed with any editor if you want to use new config files
+(other parameters for VCASN and ITHR for example). The config files are also
+located here. They are produced by Bogdan. Take a look at them!
 At line 6 of `ITS3.ini`, you can specify what configs to use `configs= ITS3-XYZ.conf`. Everything else should not be changed without consultation.
 
 If everything is set it is left to start the data taking!
@@ -176,7 +181,8 @@ For more info, read the runcontrol chapter below.
 
 ### Runcontrol
 
-If the data acquisition is started, we want to make sure that now issues accur, which could lead to bad data or no data at all!
+If the data acquisition is started, we want to make sure that no issues occur,
+which could lead to bad data or no data at all!
 
 After going back to the home directory by executing `cd`, type
 
@@ -190,11 +196,11 @@ to open the run control. It will look something like that:
 
 There are multiple windows in the Run control, as shown below:
 
-0: rc - run control overview window
-1: ps - producers - tmux panes for all connected producers i.e. ALPIDE planes, remote controlled power supply, temperature sensor
-2: dc - data collector - terminal for eudaq2 data collector
-3: rclog - run control log - errors, data and status events, etc.
-4: perf - htop - load/utilization of DAQ machine
+- 0: rc - run control overview window
+- 1: ps - producers - tmux panes for all connected producers i.e. ALPIDE planes, remote controlled power supply, temperature sensor
+- 2: dc - data collector - terminal for eudaq2 data collector
+- 3: rclog - run control log - errors, data and status events, etc.
+- 4: perf - htop - load/utilization of DAQ machine
 
 The most important one is window 0 (see image). The other windows can be used for troubleshooting. Feel free to skip through them from time to time!
 
