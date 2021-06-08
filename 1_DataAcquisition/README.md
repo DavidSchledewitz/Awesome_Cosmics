@@ -205,11 +205,11 @@ There are multiple windows in the Run control, as shown below:
 The most important one is window 0 (see image). The other windows can be used for troubleshooting. Feel free to skip through them from time to time!
 
 Useful tmux commands:
-CTRL+B – control sequence for tmux
-$\color{red}{\text{CTRL+B D – detach from session}}$ (still running in background! So don't worry. To completely end the run, type `tmux a -t ITS3`)
-CTRL+B N – next window
-CTRL+B P – previous window
-CTRL+B #NUMBER# - switch to window #NUMBER#
+- CTRL+B – control sequence for tmux
+- $\color{red}{\text{CTRL+B D – detach from session}}$ (still running in background! So don't worry. To completely end the run, type `tmux a -t ITS3`)
+- CTRL+B N – next window
+- CTRL+B P – previous window
+- CTRL+B #NUMBER# - switch to window #NUMBER#
 
 If the commands don't work, be sure you type them right: First press CTRL and B together, then release them. After you released them, type the additional key (D,N,P, or number). And be sure to **not** use shift or caps lock for a capital letter. They are used small.
 
