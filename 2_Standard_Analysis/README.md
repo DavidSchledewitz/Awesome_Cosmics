@@ -1,7 +1,8 @@
-# How to analyse data
+# How to analyze data
 
 Usually, all data analysis is done in the
 [Corryvreckan test beam data reconstruction framework](https://gitlab.cern.ch/corryvreckan/corryvreckan)
+
 To install Corryvreckan, follow the installation guide over on their
 [gitlab page](https://gitlab.cern.ch/corryvreckan/corryvreckan).
 
