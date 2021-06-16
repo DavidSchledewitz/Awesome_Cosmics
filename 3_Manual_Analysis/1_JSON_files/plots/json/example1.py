@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import matplotlib.pyplot as plt
-import matplotlib
+#import matplotlib.pyplot as plt
+#import matplotlib
 import numpy as np
 import json
 from mpl_toolkits.axes_grid1 import make_axes_locatable, axes_size
@@ -20,9 +20,9 @@ for event in data:
     for obj in event:
         if obj['_typename']=='corryvreckan::Pixel' :
             jsonPixels.append(obj);
-        if len(jsonPixels)>=10 :
+        if len(jsonPixels)>=10 :###############################################################10 pixel cut
             break;
-    if len(jsonPixels)>=10 :
+    if len(jsonPixels)>=10 :######################################################################see above
         break;
 
 #define detector IDs and colormap for plotting
