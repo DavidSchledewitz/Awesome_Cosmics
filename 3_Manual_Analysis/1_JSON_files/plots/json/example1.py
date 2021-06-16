@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-#import matplotlib.pyplot as plt
-#import matplotlib
+import matplotlib.pyplot as plt
+import matplotlib
 import numpy as np
 import json
 from mpl_toolkits.axes_grid1 import make_axes_locatable, axes_size
