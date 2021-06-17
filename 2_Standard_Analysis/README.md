@@ -8,6 +8,16 @@ taken with the ALPIDE sensors. It is provided by the ALICE ITS3 WP3 and can
 be found on their
 [gitlab page](https://gitlab.cern.ch/alice-its3-wp3/its-corryvreckan-tools)
 
+## Prerequisites
+
+It is reqired to have an installation of the ROOT analysis
+framework installed on your system. For further information please go to
+the [root installation page](https://root.cern/install/).
+
+To compile root you might be required to install cmake aswell.
+This is best done through
+[their official website](https://cmake.org/install/).
+
 ## Installation
 
 Clone the ITS-Corryvreckan-Tools repository
