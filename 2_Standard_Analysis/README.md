@@ -18,13 +18,6 @@ To compile root you might be required to install cmake aswell.
 This is best done through
 [their official website](https://cmake.org/install/).
 
-## Installation
-
-Clone the ITS-Corryvreckan-Tools repository
-```Shell Session
-$ git clone https://gitlab.cern.ch/alice-its3-wp3/its-corryvreckan-tools.git
-```
-
 The version of Corryvreckan contained in this repository is run in a Docker
 container. For this, you need to make sure to have docker installed on your
 system. On some systems this might be as easy as running
@@ -42,7 +35,15 @@ you will find the docker package for your system at
 `linux/debian/dists/buster/pool/stable/amd64/`. There, install the latest
 version of `docker-ce` and `docker-ce-cli`.
 
-Afterwards, take a look at the repository. There are several scripts
+## Installation
+
+Clone the ITS-Corryvreckan-Tools repository
+```Shell Session
+$ git clone https://gitlab.cern.ch/alice-its3-wp3/its-corryvreckan-tools.git
+```
+
+The version of Corryvreckan contained in this repository is run in a Docker
+container. Take a look at the repository. There are several scripts
 to obtain a version of the container. The easiest way to get it is to
 pull the latest version. For this, execute
 
@@ -56,6 +57,8 @@ repository (`3REF-DUT-3REF.conf`).
 
 Move this file into the `geometry` folder of your ITS-Corryvreckan-Tools
 installation.
+
+## Analysis
 
 The next step is to set up a config file in order to tell Corryvreckan what
 to do. There are templates for different steps of analyses already
