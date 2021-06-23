@@ -11,16 +11,26 @@ import subprocess
 import csv
 from scipy.optimize import curve_fit
 
-# we want to import the the txt files
-# import the files and get the information out of them
+# we want to import the data
 
-# get the path to read the files, U HAVE TO BE IN "dschledewitz"
-data_path = os.path.join(os.path.split(os.path.split(os.path.dirname(__file__))[
-                         0])[0], "data","compressed")
+from muon_data import hit_data
+
+#data_path = os.path.join(os.path.split(os.path.split(os.path.dirname(__file__))[0])[0], "data","compressed") ../../data/compressed
+
+#alignement:desy2020
+# x_align = np.loadtxt("muon_data_processing/csv/alignement_data.csv", delimiter=",", skiprows=1, usecols=(1),dtype=float)
+# #np.array([0., -10.70464573,  -6.25092376,   0.19635326,  25.26630419, 27.30091044,  78.18635686])
+# d_x_align =  np.loadtxt("muon_data_processing/csv/alignement_data.csv", delimiter=",", skiprows=1, usecols=(3),dtype=float)
+# y_align = np.loadtxt("muon_data_processing/csv/alignement_data.csv", delimiter=",", skiprows=1, usecols=(4),dtype=float) 
+#np.array([0., 45.15699466, -10.91364125,  -6.02800581,  -6.77937338, 33.55199672,  19.33957541])
+#d_y_align = np.loadtxt("muon_data_processing/csv/alignement_data.csv", delimiter=",", skiprows=1, usecols=(6),dtype=float)
+
+
+
 
 #######################---CONTAINER   CONTAINER   CONTAINER   CONTAINER---#############################
-X_coordinates = []
-Y_coordinates = []
+X_coordinates = []#hit_data[event_number][plane#, "tp1","tp2","number_of_planes","chi2","chi2red"]["X","Y","XC","YC","sdev","resx","resy"]
+Y_coordinates = [] #zu chi2: chi2red = chi2/numberofplanes*3coords-4
 Event = []
 Eventsize = []
 run = []
@@ -28,162 +38,6 @@ Mean_x = []
 Mean_y = []
 DMean_x = []
 DMean_y = []
-
-#alignement:desy2020
-x_align = np.loadtxt("muon_data_processing/csv/alignement_data.csv", delimiter=",", skiprows=1, usecols=(1),dtype=float)
-#np.array([0., -10.70464573,  -6.25092376,   0.19635326,  25.26630419, 27.30091044,  78.18635686])
-d_x_align =  np.loadtxt("muon_data_processing/csv/alignement_data.csv", delimiter=",", skiprows=1, usecols=(3),dtype=float)
-y_align = np.loadtxt("muon_data_processing/csv/alignement_data.csv", delimiter=",", skiprows=1, usecols=(4),dtype=float) 
-#np.array([0., 45.15699466, -10.91364125,  -6.02800581,  -6.77937338, 33.55199672,  19.33957541])
-d_y_align = np.loadtxt("muon_data_processing/csv/alignement_data.csv", delimiter=",", skiprows=1, usecols=(6),dtype=float)
-#######################---PRE-DEFINITIONS   PRE-DEFINITIONS   PRE-DEFINITIONS---#############################
-
-# MEAN
-def Mean(val, d_val):
-    if val.size == 1:
-        return int(val), 0  # ,0
-    else:
-        mean = np.mean(val)
-        stat = np.sqrt(1/(val.size*(val.size-1)) *
-                    np.sum((mean-val)**2))  # statistischer Fehler
-        # sys = np.mean(d_val) #systematischer Fehler
-        # print("Meanvalue:" , mean, " +- ", stat, "stat. +- ", sys, "sys")
-        return mean, stat  # , sys
-
-#CHISQUARED
-#Chi-quadrat-test p=x, n=y, dn=d_y, 
-def chi(x,y,dy):
-    chi2_=np.sum((lin(x,*fit)-y)**2/dy**2)
-    dof=len(x)-2 #dof:degrees of freedom, Freiheitsgrad  - zahl der variablen
-    chi2_red=chi2_/dof
-    #print("chi2=", chi2_)
-    #print("chi2_red=",chi2_red)
-    return chi2_red
-
-
-# goodness
-def R2(y,y_fit):
-    # residual sum of squares
-    ss_res = np.sum((y - y_fit) ** 2)
-
-    # total sum of squares
-    ss_tot = np.sum((y - np.mean(y)) ** 2)
-
-    # r-squared
-    r2 = 1 - (ss_res / ss_tot)
-    return r2
-
-# defenition to count the number of n-plane-events and save the sequence
-def counter(filename):
-
-    # initilize container
-    # global event
-    # global eventsize
-    # global x_coordinates
-    # global y_coordinates
-
-    x_coordinates = []
-    y_coordinates = []
-    event = []
-    eventsize = []
-
-    # Keys
-    key_event = "==="
-    key_num = "--- pALPIDEfs_"
-
-    # open file
-    file = open(filename, "r")
-
-    # create array
-    dat = file.readlines()
-
-    # starting variable
-    startv = False
-
-    # read the lines
-    for line in range(len(dat)):
-        # skip first 10 lines
-        if line < 10:
-            iter = 0
-            x_coor = [[], [], [], [], [], [], []]
-            y_coor = [[], [], [], [], [], [], []]
-        # elif line > 1000:
-        #     return event, eventsize, x_coordinates, y_coordinates
-
-        else:
-            # looking for hits, signed with keyword ("--- pALPIDEfs_")
-            if dat[line].startswith(key_num):
-                # check, if event started with this hit, signed with ("===")
-                # if yes, start new event
-                # if no, count hit to the current event
-                if dat[line-1].startswith(key_event):
-                    # exclude process for very first event
-                    if startv == False:
-                        startv = True
-                        iter += 1
-                        # get the number of the plane for this event
-                        plane_n = int(
-                            (dat[line].split("_")[1]).split(" ")[0])+1
-                        # note event_number
-                        event_num = int((dat[line-1].split(" ")[1]))
-                        # x coordinates
-                        k = 1
-                        while dat[line+k].startswith("Pixel"):
-                            x_coor[plane_n -
-                                    1].append(int((dat[line+k].split(" ")[1]).split(",")[0]))
-                            y_coor[plane_n -
-                                    1].append(int((dat[line+k].split(" ")[2]).split(",")[0]))
-                            k += 1
-
-                    else:
-                        # count the number of events in this run and reset counting
-########################## NUMBER OF PLANES ##############################################################
-########################## NUMBER OF PLANES ##############################################################
-########################## NUMBER OF PLANES ##############################################################
-########################## NUMBER OF PLANES ##############################################################
-
-                        if iter >= 4:
-                            event.append(event_num)
-                            eventsize.append(iter)
-                            x_coordinates.append(x_coor)
-                            y_coordinates.append(y_coor)
-
-                        event_num = int((dat[line-1].split(" ")[1]))
-
-                        # get the number of the plane for this event
-                        plane_n = int(
-                            (dat[line].split("_")[1]).split(" ")[0])+1
-                        # note event_number
-                        event_num = int((dat[line-1].split(" ")[1]))
-                        # x coordinates
-                        k = 1
-                        x_coor = [[], [], [], [], [], [], []]
-                        y_coor = [[], [], [], [], [], [], []]
-                        iter = 1
-
-                        while dat[line+k].startswith("Pixel") and line+k<len(dat)-1:
-                            x_coor[plane_n -
-                                    1].append(int((dat[line+k].split(" ")[1]).split(",")[0]))
-                            y_coor[plane_n -
-                                    1].append(int((dat[line+k].split(" ")[2]).split(",")[0]))
-                            k += 1
-
-
-                else:
-                    # count as hit in the event
-                    iter += 1
-                    # get the number of the plane for this event
-                    plane_n = int((dat[line].split("_")[1]).split(" ")[0])+1
-                    # x coordinates
-                    k = 1
-                    while dat[line+k].startswith("Pixel") and line+k<len(dat)-1:
-                        x_coor[plane_n -
-                                1].append(int((dat[line+k].split(" ")[1]).split(",")[0]))
-                        y_coor[plane_n -
-                                1].append(int((dat[line+k].split(" ")[2]).split(",")[0]))
-                        k += 1
-
-    return event, eventsize, x_coordinates, y_coordinates
 
 # definition to calculate the mean out of the pixel position
 def mean_position_align(x_coordinates, y_coordinates):
@@ -226,38 +80,11 @@ def mean_position_align(x_coordinates, y_coordinates):
         d_mean_y.append(dm_y)
         #print(i)
     return mean_x, d_mean_x, mean_y, d_mean_y
+
+
 #######################---MAIN_CODE   MAIN_CODE   MAIN_CODE   MAIN_CODE---#############################
 
 # search in the compressed folder for files (sorted alphabetically/numerically?)
-
-for i in sorted(os.listdir(data_path)):
-
-    # events stored in the .txt files beginning with "Cosmics"
-    if i.startswith("Cosmics000"):
-        path = os.path.join(data_path, i)
-
-        # split the path to get the Runnumber
-        cosmic_run, file_type = i.split("_")
-        runnumber = cosmic_run.split("smics")[1]
-        RUN = "Run_"+runnumber
-
-        # fill the counted events in the container
-        event, eventsize, x_coordinates, y_coordinates = counter(path)
-        mean_x, d_mean_x, mean_y, d_mean_y = mean_position_align(x_coordinates, y_coordinates)
-        Event.append(event)
-        Eventsize.append(eventsize)
-        run.append(RUN)
-        X_coordinates.append(x_coordinates)
-        Y_coordinates.append(y_coordinates)
-        Mean_x.append(mean_x)
-        Mean_y.append(mean_y)
-        DMean_x.append(d_mean_x)
-        DMean_y.append(d_mean_y)
-
-#print(Mean_x[325])
-#print(DMean_x[325])
-#print(run[325])
-
 
 ########### fitting process
 
@@ -271,14 +98,9 @@ Phi4,Phi5,Phi6,Phi7 = np.array([]),np.array([]),np.array([]),np.array([])
 Chi =  np.array([])
 Chi1 = np.array([])
 it = 0
-chi11,chi12,chi21,chi22 = 0,100,120,100000
+chi11,chi12,chi21,chi22 = 0,10,120,100000##maurice 10
 phi11,phi12,phi21,phi22 = 0,2,2,4#0,2,2,4
-phi31,phi32,phi41,phi42 = 4,6,6,8
-phi51,phi52,phi61,phi62 = 8,10,10,12
-phi71,phi72,phi81,phi82 = 12,14,14,16
-phi91,phi92,phi101,phi102 = 16,18,18,20
-phi111,phi112,phi121,phi122 = 20,22,22,24
-phi131,phi132,phi141,phi142 = 24,26,26,28
+
 # fig, (ax1,ax2) = plt.subplots(1,2,figsize=(12, 6))
 # ax1.set_xlim([0, 1024])
 # ax1.set_ylim([0, 512])
@@ -294,12 +116,8 @@ phi131,phi132,phi141,phi142 = 24,26,26,28
 
 
 fig1, (ax3,ax4) = plt.subplots(1,2,figsize=(16, 8))
-#fig2, (ax5,ax6) = plt.subplots(1,2,figsize=(14, 10))
-#fig3, (ax7,ax8) = plt.subplots(1,2,figsize=(14, 10))
 fig4, (ax9,ax10) = plt.subplots(1,2,figsize=(16, 8))
-#fig5, (ax11,ax12) = plt.subplots(1,2,figsize=(14, 10))
-#fig6, (ax13,ax14) = plt.subplots(1,2,figsize=(14, 10))
-#fig7, (ax15,ax16) = plt.subplots(1,2,figsize=(14, 10))
+
 ax3.set_xlim([0, 1024])
 ax3.set_ylim([0, 512])
 ax4.set_xlim([0, 1024])
@@ -321,29 +139,19 @@ ax4.tick_params(axis='both', labelsize=18)
 ax9.tick_params(axis='both', labelsize=18)
 ax10.tick_params(axis='both', labelsize=18)
 
-def subplot(fig,ax1,ax2,phi11,phi12,phi21,phi22):
-    ax1.set_xlim([0, 1024])
-    ax1.set_ylim([0, 512])
-    ax2.set_xlim([0, 1024])
-    ax2.set_ylim([0, 512])
-    ax1.set_xlabel("x-axis [pixels]")
-    ax2.set_xlabel("x-axis [pixels]")
-    ax1.set_ylabel("y-axis [pixels]")
-    ax2.set_ylabel("y-axis [pixels]")
-    ax1.set_title("Selection of aligned cosmic events, $\phi$ in range "+str(phi11)+" to "+str(phi12))
-    ax2.set_title("Selection of aligned cosmic events, $\phi$ in range "+str(phi21)+" to "+str(phi22))
-# subplot(fig1,ax3,ax4,phi11,phi12,phi21,phi22) zurück rücken
-    # subplot(fig2,ax5,ax6,phi31,phi32,phi41,phi42)
-    # subplot(fig3,ax7,ax8,phi51,phi52,phi61,phi62)
-    # subplot(fig4,ax9,ax10,phi71,phi72,phi81,phi82)
-    # subplot(fig5,ax11,ax12,phi91,phi92,phi101,phi102)
-    # subplot(fig6,ax13,ax14,phi111,phi112,phi121,phi122)
-    # subplot(fig7,ax15,ax16,phi131,phi132,phi141,phi142)
-#ax1.set_title("Selection of aligned cosmic events with $\chi^2_{red}$<= "+str(chi12))
-
-
 
 # select an event
+for event in hit_data:
+    #select plane in that event
+    for plane in hit_data[event]:
+        # check which plane in an event is not empty
+        if hit_data[event][plane]["XC"] != -1:
+
+
+
+
+
+
 for i in range(len(Mean_x)):
     for j in range(len(Mean_x[i])):
         x,y,dy,z = np.array([]),np.array([]),np.array([]),np.array([])

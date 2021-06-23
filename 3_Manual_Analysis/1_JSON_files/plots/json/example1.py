@@ -29,15 +29,15 @@ file='GblTracks.json'
 with open('%s/%s'%(path,file)) as json_file:
     data = json.load(json_file);
 
-#extract 10 objects of type 'corryvreckan::Pixel'
+#extract 1000 objects of type 'corryvreckan::Pixel'
 jsonPixels=[];
 for event in data:
     for obj in event:
         if obj['_typename']=='corryvreckan::Pixel' :
             jsonPixels.append(obj);
-        if len(jsonPixels)>=10 :###############################################################10 pixel cut
+        if len(jsonPixels)>=100000 :###############################################################1000 pixel cut
             break;
-    if len(jsonPixels)>=10 :######################################################################see above
+    if len(jsonPixels)>=100000 :######################################################################see above
         break;
 
 #define detector IDs and colormap for plotting
