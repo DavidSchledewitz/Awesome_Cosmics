@@ -14,6 +14,9 @@ file='GblTracks.json'
 with open('%s/%s'%(path,file)) as json_file:
     data = json.load(json_file);
 
+print(data)
+exit()
+
 #extract 10 objects of type 'corryvreckan::Pixel'
 jsonPixels=[];
 for event in data:
