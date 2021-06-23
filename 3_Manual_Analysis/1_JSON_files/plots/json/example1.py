@@ -1,14 +1,29 @@
 #!/usr/bin/env python3
+from tempfile import TemporaryFile
+# outfile = TemporaryFile()
+# np.savez(outfile, x=x, y=y)
+# _ = outfile.seek(0)
+# npzfile = np.load(outfile)
+# sorted(npzfile.files)
+# ['x', 'y']
+# npzfile['x']
+# array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+# np.save(outfile, x)
+# np.load(outfile)
+# array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 
 import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
 import json
+import os
 from mpl_toolkits.axes_grid1 import make_axes_locatable, axes_size
 from matplotlib.patches import Rectangle
 
 #This example imports 10 pixels from the file and plots the data without using the library.
-path='./data'
+path = os.path.join(os.path.split(os.path.dirname(__file__))[0],"json","data")
+#path='./data'
 file='GblTracks.json'
 #get data from the file
 with open('%s/%s'%(path,file)) as json_file:
@@ -42,7 +57,7 @@ for pix in jsonPixels :
 fig = plt.figure(figsize=(10,5))
 ax = fig.add_subplot(111, aspect='equal')
 for c, r, det in zip(x, y, detector):
-    ax.add_patch(Rectangle(xy=(c,r),color=cmap(det),width=1,height=1));
+    ax.add_patch(Rectangle(xy=(c,r),color=cmap(det),width=2,height=2));
 
 #add a clorbar with size fixed to the plot
 divider = make_axes_locatable(ax)

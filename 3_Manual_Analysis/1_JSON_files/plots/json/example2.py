@@ -6,13 +6,15 @@ import numpy as np
 import json
 from matplotlib.patches import Rectangle
 import sys
+import os
 import trackAnalysisLib as ta
+
 
 #This example plots a Straight Line Track and GBL Track with the same clusters
 
 # read pixels, clusters and tracks from JSON
-dmGbl=ta.datamanager('./data/GBLTracks.json');
-dmS=ta.datamanager('./data/StraightTracks.json');
+dmGbl=ta.datamanager(os.path.join(os.path.split(os.path.dirname(__file__))[0],"json","data","GBLTracks.json"));
+dmS=ta.datamanager(os.path.join(os.path.split(os.path.dirname(__file__))[0],"json","data","StraightTracks.json"));
 
 #select one gbl track we want to analyze
 gblTrack=dmGbl.tracks[0];
