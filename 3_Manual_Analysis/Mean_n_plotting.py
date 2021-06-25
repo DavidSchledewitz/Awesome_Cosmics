@@ -5,14 +5,14 @@ import csv
 
 
 # load data, seperated by runsize, seconds: 480,864,1006
-datas = np.loadtxt("muon_data_processing/csv/n-event-plane-data.csv", delimiter=",", skiprows=1, usecols=(1,2,3,4,5,6,7),dtype=int)
-run_numbers = np.loadtxt("muon_data_processing/csv/n-event-plane-data.csv", delimiter=",", skiprows=1, usecols=(0), dtype=str)
+datas = np.loadtxt("3_Manual_Analysis/csv/n-event-plane-data.csv", delimiter=",", skiprows=1, usecols=(1,2,3,4,5,6,7),dtype=int)
+run_numbers = np.loadtxt("3_Manual_Analysis/csv/n-event-plane-data.csv", delimiter=",", skiprows=1, usecols=(0), dtype=str)
 #load number of hits per plane
-datas_hits = np.loadtxt("muon_data_processing/csv/hits_per_plane.csv", delimiter=",", skiprows=1, usecols=(1,2,3,4,5,6,7),dtype=int)
-total_hits = np.loadtxt("muon_data_processing/csv/hits_per_plane.csv", delimiter=",", skiprows=1, usecols=(8),dtype=int)
+datas_hits = np.loadtxt("3_Manual_Analysis/csv/hits_per_plane.csv", delimiter=",", skiprows=1, usecols=(1,2,3,4,5,6,7),dtype=int)
+total_hits = np.loadtxt("3_Manual_Analysis/csv/hits_per_plane.csv", delimiter=",", skiprows=1, usecols=(8),dtype=int)
 # load holes
-datas_holes = np.loadtxt("muon_data_processing/csv/event_HOLES-data.csv", delimiter=",", skiprows=1, usecols=(1,2,3,4,5,6,7,8,9),dtype=int)
-datas_holes_dut = np.loadtxt("muon_data_processing/csv/event_HOLES_DUT-data.csv", delimiter=",", skiprows=1, usecols=(1,2,3,4,5,6,7,8,9),dtype=int)
+datas_holes = np.loadtxt("3_Manual_Analysis/csv/event_HOLES-data.csv", delimiter=",", skiprows=1, usecols=(1,2,3,4,5,6,7,8,9),dtype=int)
+datas_holes_dut = np.loadtxt("3_Manual_Analysis/csv/event_HOLES_DUT-data.csv", delimiter=",", skiprows=1, usecols=(1,2,3,4,5,6,7,8,9),dtype=int)
 
 
 
