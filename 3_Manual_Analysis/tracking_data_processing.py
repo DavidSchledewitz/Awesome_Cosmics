@@ -13,7 +13,7 @@ from scipy.optimize import curve_fit
 
 # we want to import the data
 
-from muon_data import hit_data
+from example_data import hit_data
 
 #data_path = os.path.join(os.path.split(os.path.split(os.path.dirname(__file__))[0])[0], "data","compressed") ../../data/compressed
 
@@ -35,7 +35,7 @@ chi2red = 10 ###############   choose chi2red cut for the data visualisation
 
 
 # select an event(run over all events)
-for event in hit_data:
+for event in range(len(hit_data)):
 
     #check that the vent has at least 4 involved planes
     if hit_data[event]["number_of_planes"] >= 4:
