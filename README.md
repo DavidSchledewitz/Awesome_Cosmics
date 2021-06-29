@@ -5,6 +5,19 @@ This repository contains all the information needed to work with the
 ALPIDE telescope, from Data acquisition, through conversion into different
 formats, and finally analysis.
 
+## Prerequisites
+
+To understand how to work with this detector, a fundamental knowledge of
+solid-state physics and specifically semiconductors is required. Please
+refer to the literature recommendations before continuing.
+
+What is also required is some basic knowledge of how to work with a linux
+system. You should be able to move/rename and edit text files, as well
+as install packages on your linux distribution of choice. There is no
+recommendation here, as nearly all linux distributions will work fine.
+
+Furthermore, you should have some experience in working with [Python](https://www.python.org/).
+
 ## First Steps
 
 Download the repository as a `.zip` or clone it onto your system by executing
