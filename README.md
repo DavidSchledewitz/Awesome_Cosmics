@@ -32,14 +32,14 @@ After you've successfully finished this step, you should have a copy of all
 of the files contained in this repository on your local machine, and are ready
 to work with them.
 
-## Contens
+## Contents
 
-# Data Acquisition
+### Data Acquisition
 
 [This section](1_DataAcquisition) concerns all the steps required in the process
 of operating the ALPIDE telescope
 
-# Standard Analysis
+### Standard Analysis
 
 Usually, data analysis with the ALPIDE telescope is done in the
 [Corryvreckan test beam data reconstruction framework](https://gitlab.cern.ch/corryvreckan/corryvreckan).
@@ -50,7 +50,7 @@ analyze it properly, and we have to work with the data by hand using Python.
 If you think the data set you're working with is fit for Corry, continue
 [here](2_Standard_Analysis).
 
-# Manual Analysis
+### Manual Analysis
 
 If you think, the data set you're working with is **not** fit for Corry,
 continue [here](3_Manual_Analysis)
