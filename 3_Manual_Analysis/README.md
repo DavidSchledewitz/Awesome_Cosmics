@@ -1,6 +1,7 @@
-# Tracking
-This Folder contains everything you'll need to know about Tracking, and
-analyzing the data in Python.
+# Manual Analysis
+So your data is shitty eh? Well no problem at all, since there is a line of
+[legends](../Media/legends.jpg)
+that have come before you and doing all the dirty work in advance.
 
 ## Export information from RAW files
 
