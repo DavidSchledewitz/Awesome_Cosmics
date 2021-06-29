@@ -8,11 +8,11 @@ formats, and finally analysis.
 ## Prerequisites
 
 To understand how to work with this detector, a fundamental knowledge of
-solid-state physics and specifically semiconductors is required. Please
+**solid-state physics** and specifically **semiconductors** is required. Please
 refer to the literature recommendations before continuing.
 
-What is also required is some basic knowledge of how to work with a linux
-system. You should be able to move/rename and edit text files, as well
+What is also required is some basic knowledge of how to work with a **linux
+system**. You should be able to move/rename and edit text files, as well
 as install packages on your linux distribution of choice. There is no
 recommendation here, as nearly all linux distributions will work fine.
 
