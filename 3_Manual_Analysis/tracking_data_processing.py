@@ -41,10 +41,10 @@ for event in range(len(hit_data)):
     if hit_data[event]["number_of_planes"] >= 4:
 
         #check, if chi2red < 10, to justify that the fit of the track in this event is good
-        if hit_data[event]["chi2red"] <= chi2red:
+        if hit_data[event]["chi2"]/(hit_data[event]["number_of_planes"]*3-4) <= chi2red:
 
             #save chi2red for good tracks in list
-            Chi2red = np.append(Chi2red,hit_data[event]["chi2red"])
+            Chi2red = np.append(Chi2red,hit_data[event]["chi2"]/(hit_data[event]["number_of_planes"]*3-4))
 
             #extract the distances out of the two track point (tp1 and tp2) given
             d_x = hit_data[event]["tp2"][0]-hit_data[event]["tp1"][0]
