@@ -12,7 +12,8 @@ import csv
 from scipy.optimize import curve_fit
 
 # we want to import the data
-
+ # the correct data is muon_data, but for presentation purposes here the example_data is used, which is a completely valid data set from 2020
+ # it is used, since muon_data has not all entries yet
 from example_data import hit_data
 
 #data_path = os.path.join(os.path.split(os.path.split(os.path.dirname(__file__))[0])[0], "data","compressed") ../../data/compressed
