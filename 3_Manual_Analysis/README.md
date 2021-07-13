@@ -22,13 +22,18 @@ file_name = "output@RunNumber@.txt"
 include = "Pixel"
 ```
 
-This will write all the pixel hit information neatly organized into a `.txt`
+This will write all the pixel hit information neatly organized into a `.json`
 file, making it ready for manual analysis.
 
 ## Analyzing the data within Python
 
-The basics (mostly python basics), root tutorial and the json folder are for you to get familiar with data analysis and handling scripts. If you are already have advanced programming skills and know the structure of json files and how to handle big data, you can skip those folders.
+The basics (mostly python basics), root tutorial and the json folder are
+for you to get familiar with data analysis and handling scripts. If you
+are already have advanced programming skills and know the structure of
+json files and how to handle big data, you can skip those folders.
 
-The python scripts have most of the event building, tracking and analysis tools needed for the analysis of our cosmic data.
-They are all combined and explained in the [jupiter notebook file](Tracking.ipynb), so check it out!
+The `scripts` folder contains all of the event building, tracking and analysis
+tools needed for the analysis of our cosmic data.
+They are all combined and explained in the `Tutorial.ipynb`
+[jupiter notebook file](Tutorial.ipynb), so check it out!
 
