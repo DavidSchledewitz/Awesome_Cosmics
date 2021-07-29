@@ -37,7 +37,7 @@ for a in range(alignments):
     # Show chi2 distro (debugging)
     chi2_array = []
 
-    for track in range(N):
+    for track in range(19):
 
         # Number of planes belonging to the track
         nop = hit_data[track]["number_of_planes"]
@@ -50,8 +50,8 @@ for a in range(alignments):
             
         # Fix Offset of planes_used to be 0
         plane1, plane2 = planes_used[0], planes_used[1]
-        posx[plane1][0], posy[plane1][0] = 0, 0
-        posx[plane2][0], posy[plane2][0] = 0, 0
+        posx[plane1][a], posy[plane1][a] = 0, 0
+        posx[plane2][a], posy[plane2][a] = 0, 0
 
         # Apply alignment for the planes
         for plane in range(7):
