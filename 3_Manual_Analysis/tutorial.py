@@ -5,8 +5,8 @@ import hit_data_unaligned as Data
 hit_data = Data.hit_data
 
 planes_used = [0,6]   #Planes fixed for alignment
-alignments = 20       #Number of alignment steps (~50 recommended)
-fine_alignments = 1  #Number of fine alignment steps (~10 recommended)
+alignments = 50       #Number of alignment steps (~50 recommended)
+fine_alignments = 10  #Number of fine alignment steps (~10 recommended)
 plot_each_step = False #Debugging
 chi2_cut = np.logspace(5.3,1,alignments-fine_alignments)
 min_chi2_reached = False
@@ -218,31 +218,7 @@ for a in range(alignments):
         cnt+=1
     else: min_chi2_reached = True
 
-# Plot section {{{
-meanoffset = []
-meanerror = []
-for a in range(alignments):
-    mean = 0
-    error = 0
-    for plane in range(7):
-        if plane in planes_used: continue
-        mean+=posx[plane][a]
-        error+=dposx[plane][a]
-    meanoffset.append(mean/5)
-    meanerror.append(error/5)
-print('Plotting...')
-xaxis = np.arange(alignments)
-plt.figure(figsize=(10,5))
-plt.xlabel('Alignment iterations')
-plt.ylabel('Mean Offset [μm]')
-print(len(xaxis),len(meanoffset))
-plt.errorbar(xaxis,meanoffset,yerr=meanerror,
-        linewidth=1,color='black',capsize=3)
-plt.tight_layout()
-plt.show()
-# }}}
-
-# So far, only the new offsets have been written to posx... need to append instead
+# So far, only the offsets have been written to posx... need to append instead...
 for a in range(alignments):
     for plane in range(7):
         posx[plane][a+1]+=posx[plane][a]
@@ -284,7 +260,6 @@ plt.show()
 # }}}
 
 plotchi2(40,np.arange(0,40,1))
-
 
 # Write to file for further anaylsis
 fx = open("hit_data_aligned.py","w")
