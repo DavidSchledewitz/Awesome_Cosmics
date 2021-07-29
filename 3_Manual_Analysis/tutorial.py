@@ -7,7 +7,7 @@ hit_data = Data.hit_data
 planes_used = [0,6]   #Planes fixed for alignment
 alignments = 50       #Number of alignment steps (~50 recommended)
 fine_alignments = 10  #Number of fine alignment steps (~10 recommended)
-plot_each_step = False #Debugging
+plot_each_step = False#Debugging
 chi2_cut = np.logspace(5.3,1,alignments-fine_alignments)
 min_chi2_reached = False
 
@@ -17,6 +17,70 @@ ppx, ppy, ppz = 0.02924, 0.02688, 20
 cnt = 0
 
 plt.style.use('bmh')
+
+# {{{ Plot Function
+def plot(n,connect_hits,plot_tracks,min_nop):
+    #Dimensions of the detector
+    xlim = 1023*ppx
+    ylim = 511*ppy
+    zlim = 6*ppz
+
+    #Create a figure object
+    fig = plt.figure(figsize=(20,20))
+    ax = plt.axes(projection='3d')    #Create 3d Axes
+    ax._axis3don = False              #... but invisible
+    ax.set_box_aspect((xlim,ylim,zlim))       #Define aspect ratio (doesn't work in jupyter)
+    ax.set_xlim3d(0,xlim)             #Axis limits in x
+    ax.set_ylim3d(0,ylim)             #Axis limits in y
+    ax.set_zlim3d(0,zlim)             #Axis limits in z
+    x = np.arange(0,1025*ppx,512*ppx) #Create a meshgrid for plane-plotting
+    y = np.arange(0,1024*ppy,512*ppy)
+    X, Y = np.meshgrid(x,y)
+    Z = np.ndarray((len(y),len(x)))
+    Z.fill(0)
+
+    #Draw the planes
+    for plane in range(7):
+        Z.fill(plane*ppz)
+        ax.plot_surface(X,Y,Z,alpha=.1,color='black')
+
+    plot_counter = 0 #We count the plots because we only want SOME
+    #Plot the hits
+    for event in range(len(hit_data)):
+
+        #Plot only events with the minimum amount of planes specified
+        if (hit_data[event]['number_of_planes'] < min_nop): continue
+        print('Plotting event {}'.format(event))
+
+        x_data, y_data, z_data = [], [], []
+
+        for plane in range(7):
+
+            #Skip over empty hits
+            if (hit_data[event][plane]["XC"] == -1): continue
+
+            #Put everything else into plottable arrays
+            x_data.append(ppx*hit_data[event][plane]["XC"])
+            y_data.append(ppy*hit_data[event][plane]["YC"])
+            z_data.append(plane*ppz)
+
+            ax.scatter3D(x_data,y_data,z_data,alpha=.7,color='black',marker='.')
+
+            # OPTIONAL: Connect dots for Better visibility of Tracks
+            if connect_hits:
+                ax.plot(x_data,y_data,z_data, linewidth=.5)#, color='grey')
+
+            # OPTIONAL: Plot tracks associated to events
+            if plot_tracks:
+                x_track = [hit_data[event]['Track_Point_1'][0],hit_data[event]['Track_Point_2'][0]]
+                y_track = [hit_data[event]['Track_Point_1'][1],hit_data[event]['Track_Point_2'][1]]
+                z_track = [hit_data[event]['Track_Point_1'][2],hit_data[event]['Track_Point_2'][2]]
+                ax.plot(x_track,y_track,z_track,linewidth=.5)
+
+        plot_counter+=1
+        if plot_counter == n: break
+    plt.show()
+# }}}
 
 # Plot chi2 Function {{{
 def plotchi2(chi2_cut,number_of_bins):
@@ -259,7 +323,9 @@ plt.tight_layout()
 plt.show()
 # }}}
 
-plotchi2(40,np.arange(0,40,1))
+plot(10,True,True,5)
+
+plotchi2(10,np.arange(0,10,.25))
 
 # Write to file for further anaylsis
 fx = open("hit_data_aligned.py","w")
