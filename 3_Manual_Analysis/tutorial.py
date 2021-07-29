@@ -5,13 +5,79 @@ import hit_data_unaligned as Data
 hit_data = Data.hit_data
 
 planes_used = [0,6]   #Planes fixed for alignment
-alignments = 5       #Number of alignment steps (~50 recommended)
+alignments = 2       #Number of alignment steps (~50 recommended)
 fine_alignments = 1  #Number of fine alignment steps (~10 recommended)
 plot_each_step = False #Debugging
+chi2_cut = np.logspace(5.3,2.7,alignments-fine_alignments)
+min_chi2_reached = False
 
 min_nop = 4
 N = len(hit_data) # Number of events (hardcoded for now)
+ppx, ppy, ppz = 0.02924, 0.02688, 20
 cnt = 0
+
+# {{{ Plot Function
+def plot(n,connect_hits,plot_tracks,min_nop):
+    #Dimensions of the detector
+    xlim = 1023*ppx
+    ylim = 511*ppy
+    zlim = 6*ppz
+
+    #Create a figure object
+    fig = plt.figure(figsize=(5,5))
+    ax = plt.axes(projection='3d')    #Create 3d Axes
+    ax._axis3don = False              #... but invisible
+    #ax.set_box_aspect((3,3,3))       #Define aspect ratio (doesn't work in jupyter)
+    ax.set_xlim3d(0,xlim)             #Axis limits in x
+    ax.set_ylim3d(0,ylim)             #Axis limits in y
+    ax.set_zlim3d(0,zlim)             #Axis limits in z
+    x = np.arange(0,1025*ppx,512*ppx) #Create a meshgrid for plane-plotting
+    y = np.arange(0,1024*ppy,512*ppy)
+    X, Y = np.meshgrid(x,y)
+    Z = np.ndarray((len(y),len(x)))
+    Z.fill(0)
+
+    #Draw the planes
+    for plane in range(7):
+        Z.fill(plane*ppz)
+        ax.plot_surface(X,Y,Z,alpha=.1,color='black')
+
+    plot_counter = 0 #We count the plots because we only want SOME
+    #Plot the hits
+    for event in range(len(hit_data)):
+
+        #Plot only events with the minimum amount of planes specified
+        if (hit_data[event]['number_of_planes'] < min_nop): continue
+        print('Plotting event {}'.format(event))
+
+        x_data, y_data, z_data = [], [], []
+
+        for plane in range(7):
+
+            #Skip over empty hits
+            if (hit_data[event][plane]["XC"] == -1): continue
+
+            #Put everything else into plottable arrays
+            x_data.append(ppx*hit_data[event][plane]["XC"])
+            y_data.append(ppy*hit_data[event][plane]["YC"])
+            z_data.append(plane*ppz)
+
+            ax.scatter3D(x_data,y_data,z_data,alpha=.7,color='black',marker='.')
+
+            # OPTIONAL: Connect dots for Better visibility of Tracks
+            if connect_hits:
+                ax.plot(x_data,y_data,z_data, linewidth=.5)#, color='grey')
+
+            # OPTIONAL: Plot tracks associated to events
+            if plot_tracks:
+                x_track = [hit_data[event]['Track_Point_1'][0],hit_data[event]['Track_Point_2'][0]]
+                y_track = [hit_data[event]['Track_Point_1'][1],hit_data[event]['Track_Point_2'][1]]
+                z_track = [hit_data[event]['Track_Point_1'][2],hit_data[event]['Track_Point_2'][2]]
+                ax.plot(x_track,y_track,z_track,linewidth=.5)
+
+        plot_counter+=1
+        if plot_counter == n: break
+    plt.show() # }}}
 
 # Initialize list for plotting alignment progress
 posx, posy, dposx, dposy = [], [], [], []
@@ -27,6 +93,8 @@ for i in range(7):
 
 print('Starting Alignment procedure...')
 
+print(hit_data[18])
+print(hit_data[19])
 for a in range(alignments):
 
     print('Tracking...')
@@ -37,21 +105,19 @@ for a in range(alignments):
     # Show chi2 distro (debugging)
     chi2_array = []
 
-    for track in range(N):
+    #NOTE Plot here
+    #plot(1, True, True, 6)
+
+    for track in range(19):
 
         # Number of planes belonging to the track
         nop = hit_data[track]["number_of_planes"]
-        if nop < min_nop:
-            print('Skipping event {}. NOP: {}'.format(track, hit_data[track]["number_of_planes"]))
-            continue
+        if nop < min_nop: continue
 
-        # Keep track (hahah) of the planes involved in tracking
-        tracked_planes = []
-            
         # Fix Offset of planes_used to be 0
         plane1, plane2 = planes_used[0], planes_used[1]
-        posx[plane1][0], posy[plane1][0] = 0, 0
-        posx[plane2][0], posy[plane2][0] = 0, 0
+        posx[plane1][a], posy[plane1][a] = 0, 0
+        posx[plane2][a], posy[plane2][a] = 0, 0
 
         # Apply alignment for the planes
         for plane in range(7):
@@ -61,14 +127,15 @@ for a in range(alignments):
         
         # Convert pixel into mm
         Fit_Data = np.zeros((nop,3))
-        counter = 0
+        tracked_planes = []
+        count_planes = 0
         for plane in range(7):
             if (hit_data[track][plane]["XC"] == -1): continue
             tracked_planes.append(plane)
-            Fit_Data[counter][0] = ppx*hit_data[track][plane]["XC"]
-            Fit_Data[counter][1] = ppy*hit_data[track][plane]["YC"]
-            Fit_Data[counter][2] = ppz*plane
-            counter+=1
+            Fit_Data[count_planes][0] = ppx*hit_data[track][plane]["XC"]
+            Fit_Data[count_planes][1] = ppy*hit_data[track][plane]["YC"]
+            Fit_Data[count_planes][2] = ppz*plane
+            count_planes+=1
         
         # Fitting Algorithm
         datamean = Fit_Data.mean(axis=0)
