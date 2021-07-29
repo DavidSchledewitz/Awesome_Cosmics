@@ -5,10 +5,10 @@ import hit_data_unaligned as Data
 hit_data = Data.hit_data
 
 planes_used = [0,6]   #Planes fixed for alignment
-alignments = 2       #Number of alignment steps (~50 recommended)
+alignments = 20       #Number of alignment steps (~50 recommended)
 fine_alignments = 1  #Number of fine alignment steps (~10 recommended)
 plot_each_step = False #Debugging
-chi2_cut = np.logspace(5.3,2.7,alignments-fine_alignments)
+chi2_cut = np.logspace(5.3,1,alignments-fine_alignments)
 min_chi2_reached = False
 
 min_nop = 4
@@ -16,68 +16,42 @@ N = len(hit_data) # Number of events (hardcoded for now)
 ppx, ppy, ppz = 0.02924, 0.02688, 20
 cnt = 0
 
-# {{{ Plot Function
-def plot(n,connect_hits,plot_tracks,min_nop):
-    #Dimensions of the detector
-    xlim = 1023*ppx
-    ylim = 511*ppy
-    zlim = 6*ppz
+plt.style.use('bmh')
 
-    #Create a figure object
-    fig = plt.figure(figsize=(5,5))
-    ax = plt.axes(projection='3d')    #Create 3d Axes
-    ax._axis3don = False              #... but invisible
-    #ax.set_box_aspect((3,3,3))       #Define aspect ratio (doesn't work in jupyter)
-    ax.set_xlim3d(0,xlim)             #Axis limits in x
-    ax.set_ylim3d(0,ylim)             #Axis limits in y
-    ax.set_zlim3d(0,zlim)             #Axis limits in z
-    x = np.arange(0,1025*ppx,512*ppx) #Create a meshgrid for plane-plotting
-    y = np.arange(0,1024*ppy,512*ppy)
-    X, Y = np.meshgrid(x,y)
-    Z = np.ndarray((len(y),len(x)))
-    Z.fill(0)
+# Plot chi2 Function {{{
+def plotchi2(chi2_cut,number_of_bins):
+    chi2_7 = []
+    chi2_6 = []
+    chi2_5 = []
+    chi2_4 = []
+    for i in range(len(hit_data)):
+        if hit_data[i]['number_of_planes'] < 4: continue
+        if hit_data[i]['chi2red'] >= chi2_cut: continue
+        if (hit_data[i]['number_of_planes'] == 7):
+            chi2_7.append(hit_data[i]['chi2red'])
+            chi2_6.append(hit_data[i]['chi2red'])
+            chi2_5.append(hit_data[i]['chi2red'])
+            chi2_4.append(hit_data[i]['chi2red'])
+        elif (hit_data[i]['number_of_planes'] == 6):
+            chi2_6.append(hit_data[i]['chi2red'])
+            chi2_5.append(hit_data[i]['chi2red'])
+            chi2_4.append(hit_data[i]['chi2red'])
+        elif (hit_data[i]['number_of_planes'] == 5):
+            chi2_5.append(hit_data[i]['chi2red'])
+            chi2_4.append(hit_data[i]['chi2red'])
+        elif (hit_data[i]['number_of_planes'] == 4):
+            chi2_4.append(hit_data[i]['chi2red'])
 
-    #Draw the planes
-    for plane in range(7):
-        Z.fill(plane*ppz)
-        ax.plot_surface(X,Y,Z,alpha=.1,color='black')
-
-    plot_counter = 0 #We count the plots because we only want SOME
-    #Plot the hits
-    for event in range(len(hit_data)):
-
-        #Plot only events with the minimum amount of planes specified
-        if (hit_data[event]['number_of_planes'] < min_nop): continue
-        print('Plotting event {}'.format(event))
-
-        x_data, y_data, z_data = [], [], []
-
-        for plane in range(7):
-
-            #Skip over empty hits
-            if (hit_data[event][plane]["XC"] == -1): continue
-
-            #Put everything else into plottable arrays
-            x_data.append(ppx*hit_data[event][plane]["XC"])
-            y_data.append(ppy*hit_data[event][plane]["YC"])
-            z_data.append(plane*ppz)
-
-            ax.scatter3D(x_data,y_data,z_data,alpha=.7,color='black',marker='.')
-
-            # OPTIONAL: Connect dots for Better visibility of Tracks
-            if connect_hits:
-                ax.plot(x_data,y_data,z_data, linewidth=.5)#, color='grey')
-
-            # OPTIONAL: Plot tracks associated to events
-            if plot_tracks:
-                x_track = [hit_data[event]['Track_Point_1'][0],hit_data[event]['Track_Point_2'][0]]
-                y_track = [hit_data[event]['Track_Point_1'][1],hit_data[event]['Track_Point_2'][1]]
-                z_track = [hit_data[event]['Track_Point_1'][2],hit_data[event]['Track_Point_2'][2]]
-                ax.plot(x_track,y_track,z_track,linewidth=.5)
-
-        plot_counter+=1
-        if plot_counter == n: break
-    plt.show() # }}}
+    plt.hist(chi2_4,number_of_bins,color='#061822',label='4 Planes')
+    plt.hist(chi2_5,number_of_bins,color='#063268',label='5 Planes')
+    plt.hist(chi2_6,number_of_bins,color='#3647a0',label='6 Planes')
+    plt.hist(chi2_7,number_of_bins,color='#5668c7',label='7 Planes')
+    plt.xlabel(r'$\chi^2/\nu$')
+    plt.ylabel('# entries')
+    plt.legend()
+    plt.plot()
+    plt.show()
+# }}}
 
 # Initialize list for plotting alignment progress
 posx, posy, dposx, dposy = [], [], [], []
@@ -93,8 +67,6 @@ for i in range(7):
 
 print('Starting Alignment procedure...')
 
-print(hit_data[18])
-print(hit_data[19])
 for a in range(alignments):
 
     print('Tracking...')
@@ -105,10 +77,7 @@ for a in range(alignments):
     # Show chi2 distro (debugging)
     chi2_array = []
 
-    #NOTE Plot here
-    #plot(1, True, True, 6)
-
-    for track in range(19):
+    for track in range(N):
 
         # Number of planes belonging to the track
         nop = hit_data[track]["number_of_planes"]
@@ -163,6 +132,12 @@ for a in range(alignments):
             std_hit.append(np.sqrt((ppx**2+ppy**2)/2)*hit_data[track][plane]["sdev"])
             d.append(np.linalg.norm(xz-x0))
 
+        #Add an entry into the dictionary containing the track coordinates
+        hit_data[track]["Track_Point_1"], hit_data[track]["Track_Point_2"] = [],[]
+        for i in range(3):
+            hit_data[track]["Track_Point_1"].append(x1[i])
+            hit_data[track]["Track_Point_2"].append(x2[i])
+
         # From there, calculate chi2 to determine the goodness of the fit
         chi2 = 0
         for entry in range(len(d)):
@@ -171,7 +146,7 @@ for a in range(alignments):
         hit_data[track]["chi2red"] = chi2/(nop*3-4)
 
         # Plot distro (DEBUG??)
-        if chi2 <= chi2_cut[cnt]:
+        if chi2/(nop*3-4) <= chi2_cut[cnt]:
             chi2_array.append(chi2)
 
     # Create Dictionary for Residuals
@@ -196,9 +171,9 @@ for a in range(alignments):
         if min_chi2_reached:
             for plane in range(7):
                 if (hit_data[track][plane]['XC'] == -1): continue
-                if (abs(hit_data[track][plane]['resx']) <= 10):
+                if (abs(hit_data[track][plane]['resx']) <= 10*ppx): # To avoid faraway residuals
                     Res[plane]['x'].append(hit_data[track][plane]['resx'])
-                if (abs(hit_data[track][plane]['resy']) <= 10):
+                if (abs(hit_data[track][plane]['resy']) <= 10*ppy):
                     Res[plane]['y'].append(hit_data[track][plane]['resy'])
 
         # Before min chi2 is reached
@@ -243,6 +218,30 @@ for a in range(alignments):
         cnt+=1
     else: min_chi2_reached = True
 
+# Plot section {{{
+meanoffset = []
+meanerror = []
+for a in range(alignments):
+    mean = 0
+    error = 0
+    for plane in range(7):
+        if plane in planes_used: continue
+        mean+=posx[plane][a]
+        error+=dposx[plane][a]
+    meanoffset.append(mean/5)
+    meanerror.append(error/5)
+print('Plotting...')
+xaxis = np.arange(alignments)
+plt.figure(figsize=(10,5))
+plt.xlabel('Alignment iterations')
+plt.ylabel('Mean Offset [μm]')
+print(len(xaxis),len(meanoffset))
+plt.errorbar(xaxis,meanoffset,yerr=meanerror,
+        linewidth=1,color='black',capsize=3)
+plt.tight_layout()
+plt.show()
+# }}}
+
 # So far, only the new offsets have been written to posx... need to append instead
 for a in range(alignments):
     for plane in range(7):
@@ -283,6 +282,9 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 # }}}
+
+plotchi2(40,np.arange(0,40,1))
+
 
 # Write to file for further anaylsis
 fx = open("hit_data_aligned.py","w")
