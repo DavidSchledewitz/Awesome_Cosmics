@@ -6,9 +6,10 @@ hit_data = Data.hit_data
 
 planes_used = [0,6]   #Planes fixed for alignment
 alignments = 20       #Number of alignment steps (~50 recommended)
-fine_alignments = 10  #Number of fine alignment steps (~10 recommended)
+fine_alignments = 3  #Number of fine alignment steps (~10 recommended)
 plot_each_step = False#Debugging
 chi2_cut = np.logspace(5.3,1,alignments-fine_alignments)
+#chi2_cut = np.linspace(200000,1,alignments-fine_alignments)
 min_chi2_reached = False
 
 min_nop = 4
@@ -26,25 +27,25 @@ def plot(n,connect_hits,plot_tracks,min_nop):
     zlim = 6*ppz
 
     #Create a figure object
-    fig = plt.figure(figsize=(20,20))
+    fig = plt.figure(figsize=(5,5))
     ax = plt.axes(projection='3d')    #Create 3d Axes
     ax._axis3don = False              #... but invisible
     #ax.set_box_aspect((xlim,ylim,zlim))       #Define aspect ratio (doesn't work in jupyter)
     ax.set_xlim3d(0,xlim)             #Axis limits in x
     ax.set_ylim3d(0,ylim)             #Axis limits in y
     ax.set_zlim3d(0,zlim)             #Axis limits in z
-    x = np.arange(0,1025*ppx,512*ppx) #Create a meshgrid for plane-plotting
-    y = np.arange(0,1024*ppy,512*ppy)
-    X, Y = np.meshgrid(x,y)
-    Z = np.ndarray((len(y),len(x)))
-    Z.fill(0)
 
     #Draw the planes
     for plane in range(7):
+        x_plot = np.arange(0,1025*ppx,512*ppx) #Create a meshgrid for plane-plotting
+        y_plot = np.arange(0,1024*ppy,512*ppy)
+        X, Y = np.meshgrid(x_plot,y_plot)
+        Z = np.ndarray((len(y_plot),len(x_plot)))
+        Z.fill(0)
         Z.fill(plane*ppz)
-        ax.plot_surface(X-posx[plane][a],
-                Y-posy[plane][a],
-                Z,alpha=.1,color='black')
+        X-=np.sum(posx[plane])
+        Y-=np.sum(posy[plane])
+        ax.plot_surface(X, Y, Z,alpha=.1,color='black')
 
     plot_counter = 0 #We count the plots because we only want SOME
     #Plot the hits
@@ -82,7 +83,7 @@ def plot(n,connect_hits,plot_tracks,min_nop):
         plot_counter+=1
         if plot_counter == n: break
     plt.savefig('GIF{}.png'.format(a))
-    plt.show()
+    #plt.show()
 # }}}
 
 # Plot chi2 Function {{{
@@ -117,7 +118,7 @@ def plotchi2(chi2_cut,number_of_bins):
     plt.ylabel('# entries')
     plt.legend()
     plt.plot()
-    plt.show()
+    #plt.show()
 # }}}
 
 # Initialize list for plotting alignment progress
@@ -134,11 +135,13 @@ for i in range(7):
 
 print('Starting Alignment procedure...')
 
+a = '-1'
+plot(3,False,True,6)
+
 for a in range(alignments):
 
     print('Tracking...')
 
-    plot(3,False,True,6)
 
     # Count how many tracks are used for alignment after chi2cut
     cnt_track = 0
@@ -218,6 +221,8 @@ for a in range(alignments):
         if chi2/(nop*3-4) <= chi2_cut[cnt]:
             chi2_array.append(chi2)
 
+    plot(3,False,True,6)
+
     # Create Dictionary for Residuals
     Res = {}
     for plane in range(7):
@@ -254,7 +259,7 @@ for a in range(alignments):
 
     if plot_each_step:
         plt.hist(chi2_array,40)
-        plt.show()
+        #plt.show()
 
     # Calculate mean of residual
     OffsetX, OffsetY, dOffsetX, dOffsetY = [], [], [], []
@@ -286,6 +291,7 @@ for a in range(alignments):
     if (cnt < len(chi2_cut)-1):
         cnt+=1
     else: min_chi2_reached = True
+
 
 # So far, only the offsets have been written to posx... need to append instead...
 for a in range(alignments):
@@ -325,12 +331,8 @@ for plane in range(7):
             linewidth=1,marker=markers[plane],color='black',capsize=3,mfc=col[plane])
 plt.legend()
 plt.tight_layout()
-plt.show()
+#plt.show()
 # }}}
-
-plot(10,True,True,5)
-
-plotchi2(10,np.arange(0,10,.25))
 
 # Write to file for further anaylsis
 fx = open("hit_data_aligned.py","w")
