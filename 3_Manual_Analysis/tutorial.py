@@ -81,7 +81,7 @@ def plot(n,connect_hits,plot_tracks,min_nop):
 
         plot_counter+=1
         if plot_counter == n: break
-    plt.savefig('GIF{}.png'.format(a))
+    #plt.savefig('GIF{}.png'.format(a))
     plt.show()
 # }}}
 
