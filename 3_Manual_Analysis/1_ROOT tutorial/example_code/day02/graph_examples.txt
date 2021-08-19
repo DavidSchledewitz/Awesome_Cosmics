@@ -1,0 +1,23 @@
+// first example for a graph
+TGraph gr;
+gr.SetTitle("My first graph;x-values;y-values");
+gr.SetPoint(0,1.,2.);
+gr.SetPoint(1,2.,4.);
+gr.SetPoint(2,5.,6.);
+gr.SetPoint(3,6.,9.);
+gr.Draw("alp");
+
+// first example for a graph with errors
+new TCanvas;
+TGraphErrors grErr;
+grErr.SetTitle("My first graph with errors;x-values;y-values");
+grErr.SetPoint(0,1.,3.);
+grErr.SetPointError(0,0.1,0.3);
+grErr.SetPoint(1,2.,5.);
+grErr.SetPointError(1,0.1,0.5);
+grErr.SetPoint(2,5.,6.);
+grErr.SetPointError(2,0.1,0.6);
+grErr.SetPoint(3,6.,10.);
+grErr.SetPointError(3,0.1,1.0);
+grErr.Draw("alp");
+

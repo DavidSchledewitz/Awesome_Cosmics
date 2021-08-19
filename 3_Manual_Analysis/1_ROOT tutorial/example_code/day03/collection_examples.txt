@@ -1,0 +1,77 @@
+// first example filling TObjArray or TList
+// create a few histograms
+TH1F *h1 = new TH1F("h1","h1",10,0,10);
+TH1F *h2 = new TH1F("h2","h2",10,0,10);
+TH1F *h3 = new TH1F("h3","h3",10,0,10);
+TH1F *h4 = new TH1F("h4","h4",10,0,10);
+
+// crate a list and a TObjArray
+TList mylist;
+
+mylist.Add(h1);
+mylist.Add(h2);
+mylist.Add(h3);
+mylist.Add(h4);
+
+TObjArray arr;
+arr.Add(h1);
+arr.Add(h2);
+arr.Add(h3);
+arr.Add(h4);
+
+//
+// simple for loop over TObjArray and TList
+//
+for (Int_t iObj=0; iObj<mylist.GetEntries(); ++iObj){
+  cout << "Object name in list at position " << iObj << ": " << mylist.At(iObj)->GetName() << endl;
+}
+
+// NOTE: For TObjArray use 'GetEntriesFast'! Be aware that you might retrieve a NULL pointer!
+for (Int_t iObj=0; iObj<arr.GetEntriesFast(); ++iObj){
+  cout << "Object name in array at position      " << iObj << ": " << arr.At(iObj)->GetName() << endl;
+}
+
+//
+// Removing objects
+//
+
+mylist.Remove(h2);
+arr.Remove(h2);
+// => run the for loops from above again
+// for the TObjArray this will crash, since at position '1' a NULL pointer will appear
+//   accessing it leads to a crash
+
+
+//
+// using iterators to loop over objects
+//
+TIter nextListItem(&mylist);
+TIter nextArrItem(&arr);
+
+TObject *o=0x0;
+
+// () in this case is an operator that returns the next object
+while ( (o=nextListItem()) ) {
+  cout << "Object name in list " << o->GetName() << endl;
+}
+
+while ( (o=nextArrItem()) ) {
+  cout << "Object name in list " << o->GetName() << endl;
+}
+
+
+// Equivalently, one can use the function Next() of the iterator
+cout << endl << endl << "Alternative way of iterating...." << endl << endl;
+
+TIter listIterator(&mylist);
+TIter arrIterator(&arr);
+
+o=0x0;
+
+while ( (o=listIterator.Next()) ) {
+  cout << "Object name in list " << o->GetName() << endl;
+}
+
+while ( (o=arrIterator.Next()) ) {
+  cout << "Object name in list " << o->GetName() << endl;
+}

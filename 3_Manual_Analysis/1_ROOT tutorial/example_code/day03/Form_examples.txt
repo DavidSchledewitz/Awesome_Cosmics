@@ -1,0 +1,7 @@
+TString path = "myPath/to/some/file";
+
+for (Int_t fileIdx = 0; fileIdx < 5; ++fileIdx) {
+  TString fileName = Form("myFile%d.root", fileIdx);
+  TString filePathName = Form("%s/%s", path.Data(), fileName.Data());
+  printf("fileIdx %d: filePathName=\"%s\"\n\n", fileIdx, filePathName.Data());
+}

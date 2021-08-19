@@ -1,0 +1,18 @@
+#-*- Mode: Makefile -*-
+
+# list of source files to be compiled
+# needs to be separated by a space
+# or if a line break is used the line
+# must end with a '\'
+SRCS= code/myEvent.cxx \
+      code/myParticle.cxx
+      
+HDRS= $(SRCS:.cxx=.h)
+
+# This is the name of the linkdef file of the package
+DHDR= MyPackageLinkDef.h
+
+# here one could define paths to header file needed
+# to compile the package, separated by space
+EINCLUDE:=-I./code
+

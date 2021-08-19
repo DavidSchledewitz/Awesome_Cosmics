@@ -1,0 +1,23 @@
+// First example for a canvas to show how to devide in pas
+TCanvas *c=new TCanvas("c","my first canvas");
+c->Divide(2,2);
+TPaveText t; //output text
+for (Int_t iPad=0; iPad<4; ++iPad) {
+  // note that the sub-pads start with '1'
+  // therefore the '+1' is needed
+  // Pad '0' is the background pad
+  c->cd(iPad+1);
+  TPaveText *p=new TPaveText(.3,.3,.7,.7);
+  p->SetFillColor(10); p->SetBorderSize(1);
+  p->AddText(Form("Pad number %d",iPad+1));
+  p->Draw();
+}
+
+
+
+// save the contents of a canvas:
+c->SaveAs("/tmp/myCanvas.png");
+//or
+c->SaveAs("/tmp/myCanvas.jpg");
+
+

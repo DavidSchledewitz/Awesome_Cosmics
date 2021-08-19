@@ -1,0 +1,30 @@
+// simple example: define two strings and add them
+  TString s1("Hi");
+  TString s2="over there";
+  TString s3=s1+" "+s2+"!";
+cout<<s3<<endl;
+
+
+
+// more examples
+//prepend and append
+s1.Prepend("Why should I say ");
+s1.Append(" To you?");
+cout<<s1<<endl;
+
+//get one letter out of the string
+// this is the 'y' of 'Why' in s1
+TString oneLetter=s1(2);
+cout<<oneLetter<<endl;
+
+//getting a substring starting at
+// position 4 (the 's' in 'should')
+// and being 6 letters long
+TString aSubstring(s1(4,6));
+cout<<aSubstring<<endl;
+
+
+//replace a string
+s1.ReplaceAll("should I","should I not");
+cout<<s1<<endl;
+

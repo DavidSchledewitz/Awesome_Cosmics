@@ -1,0 +1,28 @@
+// crate a histogram and list the
+// contents of the current directory
+TH1F *h1 = new TH1F("h1","h1",10,0,10);
+gDirectory->ls();
+
+
+// open a file first, create a histogram
+// and list the contents
+TFile f("testFile.root","recreate");
+TH1F *h2 = new TH1F("h2","h2",10,0,10);
+gDirectory->ls();
+// If you don't want the program to crash, you can
+// remove the association to the file by uncommenting
+// the following line:
+// h2->SetDirectory(0x0);
+f.Close();
+
+// if you now try to draw h2 ROOT will crash
+h2->Draw()
+
+// the reason is that h2 is associated to the
+// file and if the file is closed the histogram
+// is deleted. However the pointer still exists
+// but points to a position in memory where
+// no histogram exists any longer
+
+
+

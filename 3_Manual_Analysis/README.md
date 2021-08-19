@@ -3,6 +3,8 @@ So your data is shitty eh? Well no problem at all, since there is a line of
 [legends](../Media/legends.jpg)
 that have come before you and did all the dirty work in advance.
 
+The goal here is to analyze the data 'by hand' in Python.
+
 ## Export information from RAW files
 
 To work with the data in python, you'll need to convert it into a readable
@@ -18,7 +20,7 @@ Into the `run.sh` write down the following two modules
 file_name = "data/run@RunNumber@.raw"
 
 [JSONWriter]
-file_name = "output@RunNumber@.txt"
+file_name = "output@RunNumber@.json"
 include = "Pixel"
 ```
 

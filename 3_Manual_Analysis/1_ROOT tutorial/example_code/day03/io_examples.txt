@@ -1,0 +1,30 @@
+// simple example, ho to write a histogram to a file
+TH1F *h1 = new TH1F("h1","first",10,0,10);
+h1->Fill(1,2);
+h1->Fill(2,4);
+h1->Fill(3,3);
+h1->Fill(4,1);
+
+TFile f("myFirstRootFile.root","recreate");
+h1->Write();
+f.ls();
+f.Close();
+
+// start the root Browser
+TBrowser b;
+
+// retrieve the object from the file, using the Get() function
+// the return type of type TObject*
+TFile f("myFirstRootFile.root");
+f.ls()
+TObject *o = f.Get("h1")
+o->GetName()
+o->Draw("HIST");
+
+
+// read back the object and cast it
+TFile f("myFirstRootFile.root");
+f.ls();
+// we know we have save a histogram of type TH1F, so we can explicitly cast the TObject
+//   to a TH1F
+TH1F *h1 = (TH1F*)f.Get("h1");

@@ -1,0 +1,152 @@
+// read a data file of tab separated x and y values into a tree
+TTree t;
+t.ReadFile("data.txt","x:y");
+
+// draw y against x, log(y) against x,
+// y/100 against x/10, and y against x for x<5
+TCanvas c
+c.Divide(2,2);
+
+c.cd(1);
+t.Draw("y:x");
+
+c.cd(2);
+t.Draw("log(y):x");
+
+c.cd(3);
+t.Draw("y/100:x/10");
+
+c.cd(4);
+t.Draw("y:x","x<5");
+
+// ===========================================================
+// Print the structure of the tree
+t.Print()
+
+
+// ===========================================================
+// Print the output of variables to the console
+t.Scan("x:y","x>2&&x<2.03")
+
+
+// ===========================================================
+// Getting the number of entries in a tree
+t.GetEntries()
+
+
+// ===========================================================
+// setting and alias
+t.SetAlias("logYshift","log(y)+5.4");
+t.Draw("logYshift:x");
+
+
+// ===========================================================
+// access the buffers of the tree
+// 'goff' as draw option means no graphical
+// output, only filling of the buffers
+t.Draw("y:x","x>3&&x<5","goff")
+TGraph gr(t.GetSelectedRows(), t.GetV2(), t.GetV1());
+gr.SetMarkerColor(kRed);
+gr.SetMarkerStyle(21);
+gr.SetMarkerSize(1);
+gr.Draw("alp");
+
+
+// ===========================================================
+// directly access the branch address
+// When a branch address is set and GetEntry(i)
+// of the tree is called, the value of the branch for
+// entry i is stored in the object (variable)
+Float_t x=0,y=0;
+t.SetBranchAddress("x",&x);
+t.SetBranchAddress("y",&y);
+TGraph gr2(t.GetEntries());
+for (Int_t i=0; i<t.GetEntries(); ++i) { t.GetEntry(i); gr2.SetPoint(i,x,y); }
+gr2.SetMarkerColor(kBlue);
+gr2.Draw("ap");
+
+//A simpler way to see it
+//visualize the first 10 entries
+Float_t myx=0,myy=0;
+t.SetBranchAddress("x",&myx);
+t.SetBranchAddress("y",&myy);
+// use precision=3 to get better visualization
+t.Scan("x:y","","",10); 
+// get the entry num. 5 and print the values of x and y
+// compare them with those in the TTree
+t.GetEntry(5);
+cout<<myx<<" "<<myy<<" "<<endl;
+t.GetEntry(8);
+cout<<myx<<" "<<myy<<" "<<endl;
+
+
+// ===========================================================
+// filling a tree creating a branch holding a simple number
+TTree t;
+Float_t val=0;
+t.Branch("val",&val);
+// when the fill function is called the value is written as an entry
+for (Int_t i=0; i<100; ++i) { val=i/100.; t.Fill(); }
+t.GetEntries();
+t.Print();
+
+
+// ===========================================================
+// filling a tree creating a branch holding a ROOT object
+TTree t;
+//create a branch to hold the TLorentzVector
+TLorentzVector *v=new TLorentzVector;
+t.Branch("particle",&v);
+
+//generate momentum and energy of the particle
+ for (int i = 0; i < 1000; ++i) {
+     double Px = gRandom->Gaus(0,1);
+     double Py = gRandom->Gaus(0,1);
+     double Pz = gRandom->Gaus(0,1);
+     double E  = gRandom->Gaus(10,5);
+     //fill the TLorentzVector
+     v->SetPxPyPzE(Px,Py,Pz,E);
+   t.Fill();
+}
+t.Print();
+
+
+// ===========================================================
+// draw something using a member of the class
+t.Draw("particle.fE");
+t.Draw("particle.fP.fY")
+
+
+// ===========================================================
+// draw something using a function of the class
+t.Draw("particle.Pt()");
+t.Draw("particle.Pt():particle.Eta()","","colz");
+
+
+// ===========================================================
+// draw something, specifying explicitly the histogram
+// name and binning
+t.Draw("particle.Pt()>>hPt(100,1,3)");
+// the histogram is associated to the current directory
+gDirectory->ls()
+
+
+// ===========================================================
+// draw into a histogram that was defined before
+TH1F hEta("hEta","Eta distribution;#eta;entries",30,-1.5,1.5);
+t.Draw("particle.Eta()>>hEta");
+
+
+// ===========================================================
+// directly access branch data for ROOT objects
+TLorentzVector *v=new TLorentzVector;
+// note the pointer to the pointer of the
+// ROOT object is passed to the function (&v);
+t.SetBranchAddress("particle",&v);
+// loop over the data and fill a graph
+TGraph gr(t.GetEntries());
+for (Int_t i=0; i<t.GetEntries(); ++i) {
+  t.GetEntry(i);
+  gr.SetPoint(i,v->Px(),v->Py());
+}
+gr.Draw("ap");

@@ -1,0 +1,14 @@
+// first example for a function
+TF1 f("myFunction","sin(x)",-4,4);
+f.SetTitle("Sinus of x;x;sin(x)");
+f.Draw();
+
+
+// example with parameters
+TF1 f("myFunction","[0]+[1]*sin(x+[2])",-4,4);
+f.SetParameters(1,2,2);
+f.SetTitle("Function with parameters;x;1+2*sin(x+2)");
+f.Draw();
+
+
+

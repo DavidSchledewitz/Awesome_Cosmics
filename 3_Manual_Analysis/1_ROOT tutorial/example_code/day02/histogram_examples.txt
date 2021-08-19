@@ -1,0 +1,95 @@
+// first example
+TH1F myFirstHisto("myFirstHisto","A histogram;value;entries",10,0,10);
+myFirstHisto.Fill(3);
+myFirstHisto.Fill(4);
+myFirstHisto.Fill(4);
+myFirstHisto.Fill(4);
+myFirstHisto.Fill(4);
+myFirstHisto.Fill(5,2);
+//NB: in ROOT6 one needs to specify the option "HIST" to have the rapresentation without errors.
+//If you do not use it, errors will be diplayed. Nota that the errors are not poissonian when you fill with weights as above
+myFirstHisto.Draw("HIST");
+
+
+//example for arbitrary binning
+// NOTE: the number of entries in the array is 5
+Float_t binLimits[5]={0.,2.,3.,10.,20.};
+//       which corresponds to 4 bins
+//
+//     0.     2.      3.     10.    20.
+//     | bin1 |  bin2 | bin3 |  bin4 |
+//
+TH1F histo("histo","Arbitrary bin limits example;value;entries",4,binLimits);
+histo.Fill(1);    //will go into bin1
+histo.Fill(2);    //will go into bin2
+histo.Fill(2.9);  //will go into bin2
+histo.Fill(4);    //will go into bin3
+histo.Fill(7);    //will go into bin3
+histo.Fill(8);    //will go into bin3
+histo.Fill(9);    //will go into bin3
+histo.Fill(10);   //will go into bin4
+histo.Fill(15);   //will go into bin4
+histo.Draw("HIST");
+
+
+// accessing the bin content
+TH1F histo("hist","A histogram;value;entries",8,2,10);
+histo.SetBinContent(3,2);
+histo.SetBinContent(4,6);
+histo.SetBinContent(5,4);
+
+histo.Fill(0);
+
+histo.GetBinContent(0)
+histo.GetBinContent(4)
+
+
+// draw 2 histograms
+{
+  TH1F *h1 = new TH1F("h1","first",10,0,10);
+  h1->Fill(1,2);
+  h1->Fill(2,4);
+  h1->Fill(3,3);
+  h1->Fill(4,1);
+
+  TH1F *h2 = new TH1F("h2","second",10,0,10);
+  h2->Fill(3,2);
+  h2->Fill(4,4);
+  h2->Fill(5,3);
+  h2->Fill(6,1);
+  h2->SetLineColor(kRed);
+
+  h1->Draw("HIST");
+  h2->Draw("same");
+}
+
+
+// draw 2 histograms and show the stat boxes for both
+{
+  // Create canvas and dummy histograms
+  TCanvas* c1 = new TCanvas();
+
+  TH1F h1("h1", "Title 1", 10, 0, 10)
+  TH1F h2("h2", "Title 2", 10, -3, 30)
+  h1.Fill(1, 5);
+  h2.Fill(2, 3);
+  h2.SetLineColor(kRed);
+
+  // Draw them (and overwrite by NOT using "same") to create the stat box objects for both 
+  h1.Draw("HIST");
+  h2.Draw("HIST");
+
+  // Update the canvas to force drawing, then draw again using "same" to overlay
+  c1->Update();
+  h1.Draw("HIST");
+  h2.Draw("same");
+
+  // Retrieve the stat box of the second histo and change it position
+  TPaveStats *ps2 = (TPaveStats*)h2->GetListOfFunctions()->FindObject("stats");
+  ps2->SetX1NDC(0.5)
+  ps2->SetX2NDC(0.7);
+
+  // Force updating of canvas
+  c1->Modified();
+}
+
