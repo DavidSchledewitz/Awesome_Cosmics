@@ -70,6 +70,23 @@ Make yourself familiar with the modules loaded in these config files.
 For a list of all modules consult
 [the Corryvreckan user manual](https://project-corryvreckan.web.cern.ch/project-corryvreckan/usermanual/corryvreckan-manual-v2.0.1.pdf)
 
+## Example with testbeam data
+
+The file ´run000380.raw´ contains data previously taken with the telescope at a testbeam in 2019. We will go through all four analysis stages:
+
+### Masking
+
+- Open the ´createmask.conf´.
+- First load the Corryvreckan module ´[Corryvreckan]´. You can specify the level of detail of your console output with ´log_level´ and ´log_format´.
+- Specify the geometry file by setting the ´detectors_file´ variable.
+- The variable ´detectors_file_updated´ can be specified if there are alignment calculations which change the detector layout. It will be saved to
+the specified geometry file. The variable ´histogram_file´ can be used to store the analysis into a ROOT object.
+- Then, load the ´[Metronome]´ module, to slice the data stream into regular time frames with a defined length. And set the ´triggers´ variable to ´1´.
+- Next, load the ´[EventLoaderEUDAQ2]´ module to read the raw data into Corryvreckan. The variable ´file_name´ specifies the input file.
+- Finally, load the ´[MaskCreator]´ module, to create a detector mask. The variable ´frequency_cut´ specifies how frequent a pixel has to hit before
+it will be masked. If it is set to 1000, the module will mask every pixel that fires 1000x more often than average.
+
+## Further reading
 Other helpful resources are
 - [The Corryvreckan project website](https://project-corryvreckan.web.cern.ch/project-corryvreckan/)
 - [The Corryvreckan user manual](https://project-corryvreckan.web.cern.ch/project-corryvreckan/usermanual/corryvreckan-manual-v2.0.1.pdf)
